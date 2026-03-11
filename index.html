@@ -40,6 +40,7 @@
   }
   </script>
 
+  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@700&f[]=plus-jakarta-sans@400&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -48,31 +49,94 @@
     <header class="header">
       <h1>Accessibility Color Checker</h1>
       <p class="header-subtitle">Check WCAG accessibility, simulate colorblindness, and find better colors</p>
+      <p class="header-cta">Enter your colors below to check contrast accessibility</p>
     </header>
+
+    <!-- Why It Matters -->
+    <section id="whyItMattersSection" class="why-section">
+      <h2>Why Color Contrast Matters</h2>
+      <div class="why-stats">
+        <div class="stat-card">
+          <div class="stat-number">5,100+</div>
+          <div class="stat-label">ADA digital accessibility lawsuits filed in 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">83.6%</div>
+          <div class="stat-label">of top websites fail basic contrast requirements</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$50K/day</div>
+          <div class="stat-label">potential fines for non-compliance</div>
+        </div>
+      </div>
+      <p class="why-moral">Over 1 billion people worldwide live with some form of disability. Good color contrast isn't just a legal requirement — everyone deserves to read your content.</p>
+
+      <h3>
+        <button class="about-toggle" id="wcagToggle">Learn about WCAG Contrast Guidelines</button>
+      </h3>
+      <div class="about-content" id="wcagContent">
+        <h4>What is Contrast Ratio?</h4>
+        <p>Contrast ratio measures the difference in luminance (brightness) between two colors. It's expressed as a ratio from 1:1 (no contrast) to 21:1 (maximum contrast).</p>
+
+        <h4>WCAG AA vs. AAA</h4>
+        <p><strong>AA</strong> (minimum standard):</p>
+        <ul class="about-list">
+          <li>Normal text: 4.5:1 ratio</li>
+          <li>Large text (18pt+ or 14pt+ bold): 3:1 ratio</li>
+        </ul>
+        <p><strong>AAA</strong> (enhanced standard):</p>
+        <ul class="about-list">
+          <li>Normal text: 7:1 ratio</li>
+          <li>Large text: 4.5:1 ratio</li>
+        </ul>
+
+        <h4>Why It Matters</h4>
+        <p>Sufficient contrast is essential for people with low vision, color blindness, and older users. It also improves readability for everyone, especially on mobile devices and in bright environments.</p>
+
+        <h4>Tips for Accessible Colors</h4>
+        <ul class="about-list">
+          <li>Don't rely on color alone to convey meaning</li>
+          <li>Use patterns, icons, or text labels alongside color</li>
+          <li>Test with colorblind simulation tools (like this one!)</li>
+          <li>Check contrast ratios early in your design process</li>
+        </ul>
+
+        <p><small>Learn more at <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener">W3C WCAG 2.1 Contrast (Minimum)</a></small></p>
+      </div>
+    </section>
 
     <!-- Input Section -->
     <section id="inputSection">
       <h2>Select Colors</h2>
 
-      <div class="input-group">
-        <label for="foregroundColor">Foreground (Text) Color</label>
-        <div class="input-wrapper">
-          <input type="color" id="foregroundColor" value="#000000" aria-label="Foreground color picker">
-          <input type="text" id="foregroundHex" value="#000000" maxlength="7" placeholder="#000000" aria-label="Foreground color hex input">
-        </div>
-      </div>
+      <div class="input-section-layout">
+        <div class="input-controls">
+          <div class="input-group">
+            <label for="foregroundColor">Foreground (Text) Color</label>
+            <div class="input-wrapper">
+              <input type="color" id="foregroundColor" value="#000000" aria-label="Foreground color picker">
+              <input type="text" id="foregroundHex" value="#000000" maxlength="7" placeholder="#000000" aria-label="Foreground color hex input">
+            </div>
+          </div>
 
-      <div class="input-group">
-        <label for="backgroundColor">Background Color</label>
-        <div class="input-wrapper">
-          <input type="color" id="backgroundColor" value="#ffffff" aria-label="Background color picker">
-          <input type="text" id="backgroundHex" value="#ffffff" maxlength="7" placeholder="#ffffff" aria-label="Background color hex input">
-        </div>
-      </div>
+          <div class="input-group">
+            <label for="backgroundColor">Background Color</label>
+            <div class="input-wrapper">
+              <input type="color" id="backgroundColor" value="#ffffff" aria-label="Background color picker">
+              <input type="text" id="backgroundHex" value="#ffffff" maxlength="7" placeholder="#ffffff" aria-label="Background color hex input">
+            </div>
+          </div>
 
-      <div class="button-group">
-        <button id="swapButton" aria-label="Swap foreground and background colors">&#8596; Swap Colors</button>
-        <button id="copyButton" aria-label="Copy CSS to clipboard">&#128203; Copy CSS</button>
+          <div class="button-group">
+            <button id="swapButton" aria-label="Swap foreground and background colors">&#8596; Swap Colors</button>
+            <button id="copyButton" aria-label="Copy CSS to clipboard">&#128203; Copy CSS</button>
+            <button id="shareButton" aria-label="Copy shareable link to clipboard">&#128279; Share Link</button>
+          </div>
+        </div>
+
+        <div class="mini-preview" id="miniPreview">
+          <span class="mini-preview-text">Text</span>
+        </div>
       </div>
     </section>
 
@@ -166,41 +230,6 @@
       </div>
     </section>
 
-    <!-- About -->
-    <section id="aboutSection">
-      <h3>
-        <button class="about-toggle" id="aboutToggle">Learn about WCAG Contrast Guidelines</button>
-      </h3>
-      <div class="about-content" id="aboutContent">
-        <h4>What is Contrast Ratio?</h4>
-        <p>Contrast ratio measures the difference in luminance (brightness) between two colors. It's expressed as a ratio from 1:1 (no contrast) to 21:1 (maximum contrast).</p>
-
-        <h4>WCAG AA vs. AAA</h4>
-        <p><strong>AA</strong> (minimum standard):</p>
-        <ul class="about-list">
-          <li>Normal text: 4.5:1 ratio</li>
-          <li>Large text (18pt+ or 14pt+ bold): 3:1 ratio</li>
-        </ul>
-        <p><strong>AAA</strong> (enhanced standard):</p>
-        <ul class="about-list">
-          <li>Normal text: 7:1 ratio</li>
-          <li>Large text: 4.5:1 ratio</li>
-        </ul>
-
-        <h4>Why It Matters</h4>
-        <p>Sufficient contrast is essential for people with low vision, color blindness, and older users. It also improves readability for everyone, especially on mobile devices and in bright environments.</p>
-
-        <h4>Tips for Accessible Colors</h4>
-        <ul class="about-list">
-          <li>Don't rely on color alone to convey meaning</li>
-          <li>Use patterns, icons, or text labels alongside color</li>
-          <li>Test with colorblind simulation tools (like this one!)</li>
-          <li>Check contrast ratios early in your design process</li>
-        </ul>
-
-        <p><small>Learn more at <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener">W3C WCAG 2.1 Contrast (Minimum)</a></small></p>
-      </div>
-    </section>
 
     <!-- Affiliate Section -->
     <section class="affiliate">
