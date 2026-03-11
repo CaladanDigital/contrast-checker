@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- SEO & Meta Tags -->
+  <title>Accessibility Color Checker | accessiblitycolor.com</title>
+  <meta name="description" content="Free WCAG color contrast checker. Test foreground and background colors for AA/AAA accessibility compliance. Colorblind simulation, accessible alternatives, and CSS export.">
+  <meta name="keywords" content="color contrast checker, WCAG contrast ratio, accessibility tool, colorblind simulator, color accessibility">
+  <meta name="author" content="Caladan Digital LLC">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Accessibility Color Checker | accessiblitycolor.com">
+  <meta property="og:description" content="Free WCAG color contrast checker. Test foreground and background colors for AA/AAA accessibility compliance. Colorblind simulation, accessible alternatives, and CSS export.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://accessiblitycolor.com">
+  <meta property="og:image" content="https://accessiblitycolor.com/og-image.png">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Accessibility Color Checker",
+    "description": "Free WCAG color contrast checker. Test foreground and background colors for AA/AAA accessibility compliance.",
+    "url": "https://accessiblitycolor.com",
+    "applicationCategory": "Accessibility",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Caladan Digital LLC",
+      "url": "https://caladandigital.com"
+    }
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+</head>
+<body>
+  <main>
+    <!-- Header -->
+    <header class="header">
+      <h1>Accessibility Color Checker</h1>
+      <p class="header-subtitle">Check WCAG accessibility, simulate colorblindness, and find better colors</p>
+    </header>
+
+    <!-- Input Section -->
+    <section id="inputSection">
+      <h2>Select Colors</h2>
+
+      <div class="input-group">
+        <label for="foregroundColor">Foreground (Text) Color</label>
+        <div class="input-wrapper">
+          <input type="color" id="foregroundColor" value="#000000" aria-label="Foreground color picker">
+          <input type="text" id="foregroundHex" value="#000000" maxlength="7" placeholder="#000000" aria-label="Foreground color hex input">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="backgroundColor">Background Color</label>
+        <div class="input-wrapper">
+          <input type="color" id="backgroundColor" value="#ffffff" aria-label="Background color picker">
+          <input type="text" id="backgroundHex" value="#ffffff" maxlength="7" placeholder="#ffffff" aria-label="Background color hex input">
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button id="swapButton" aria-label="Swap foreground and background colors">&#8596; Swap Colors</button>
+        <button id="copyButton" aria-label="Copy CSS to clipboard">&#128203; Copy CSS</button>
+      </div>
+    </section>
+
+    <!-- Contrast Ratio -->
+    <section id="contrastSection">
+      <div class="contrast-result">
+        <div class="contrast-value" id="contrastRatio" role="status" aria-label="Contrast ratio">21:1</div>
+        <div class="contrast-label">Contrast Ratio</div>
+      </div>
+
+      <h2>WCAG Compliance</h2>
+      <div class="wcag-badges" id="wcagBadges">
+        <div class="badge fail">
+          <div class="badge-level">AA Normal</div>
+          <div class="badge-ratio" data-level="aa-normal">4.5:1</div>
+        </div>
+        <div class="badge fail">
+          <div class="badge-level">AA Large</div>
+          <div class="badge-ratio" data-level="aa-large">3:1</div>
+        </div>
+        <div class="badge fail">
+          <div class="badge-level">AAA Normal</div>
+          <div class="badge-ratio" data-level="aaa-normal">7:1</div>
+        </div>
+        <div class="badge fail">
+          <div class="badge-level">AAA Large</div>
+          <div class="badge-ratio" data-level="aaa-large">4.5:1</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Preview -->
+    <section id="previewSection">
+      <h2>Live Preview</h2>
+      <div class="preview-box" id="previewBox">
+        <div class="preview-item">
+          <span class="preview-label">Heading (H1)</span>
+          <h3 class="preview-heading">The quick brown fox</h3>
+        </div>
+        <div class="preview-item">
+          <span class="preview-label">Body Text</span>
+          <p class="preview-body">The quick brown fox jumps over the lazy dog. This is regular body text used for paragraphs and long-form content.</p>
+        </div>
+        <div class="preview-item">
+          <span class="preview-label">Small Text (14px)</span>
+          <p class="preview-small">Small text might appear in captions, help text, or UI labels. Ensure it meets accessibility standards.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Colorblind Simulation -->
+    <section id="colorblindSection">
+      <h2>Colorblind Simulations</h2>
+      <p>See how your color combination appears to people with color vision deficiencies:</p>
+
+      <div class="simulations" id="simulations">
+        <div class="simulation">
+          <h4>Normal Vision</h4>
+          <div class="simulation-preview" id="normalVision"></div>
+          <div class="simulation-label">Reference</div>
+        </div>
+        <div class="simulation">
+          <h4>Protanopia</h4>
+          <div class="simulation-preview" id="protanopia"></div>
+          <div class="simulation-label">Red-Blind (1% of males)</div>
+        </div>
+        <div class="simulation">
+          <h4>Deuteranopia</h4>
+          <div class="simulation-preview" id="deuteranopia"></div>
+          <div class="simulation-label">Green-Blind (1% of males)</div>
+        </div>
+        <div class="simulation">
+          <h4>Tritanopia</h4>
+          <div class="simulation-preview" id="tritanopia"></div>
+          <div class="simulation-label">Blue-Blind (0.001%)</div>
+        </div>
+        <div class="simulation">
+          <h4>Achromatopsia</h4>
+          <div class="simulation-preview" id="achromatopsia"></div>
+          <div class="simulation-label">Monochrome (very rare)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suggestions -->
+    <section id="suggestionsSection" class="hidden">
+      <div class="suggestions">
+        <h3>Suggested Accessible Alternatives</h3>
+        <p>Your current colors don't meet WCAG AA for normal text. Try these alternatives:</p>
+        <ul class="suggestion-list" id="suggestionsList"></ul>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="aboutSection">
+      <h3>
+        <button class="about-toggle" id="aboutToggle">Learn about WCAG Contrast Guidelines</button>
+      </h3>
+      <div class="about-content" id="aboutContent">
+        <h4>What is Contrast Ratio?</h4>
+        <p>Contrast ratio measures the difference in luminance (brightness) between two colors. It's expressed as a ratio from 1:1 (no contrast) to 21:1 (maximum contrast).</p>
+
+        <h4>WCAG AA vs. AAA</h4>
+        <p><strong>AA</strong> (minimum standard):</p>
+        <ul class="about-list">
+          <li>Normal text: 4.5:1 ratio</li>
+          <li>Large text (18pt+ or 14pt+ bold): 3:1 ratio</li>
+        </ul>
+        <p><strong>AAA</strong> (enhanced standard):</p>
+        <ul class="about-list">
+          <li>Normal text: 7:1 ratio</li>
+          <li>Large text: 4.5:1 ratio</li>
+        </ul>
+
+        <h4>Why It Matters</h4>
+        <p>Sufficient contrast is essential for people with low vision, color blindness, and older users. It also improves readability for everyone, especially on mobile devices and in bright environments.</p>
+
+        <h4>Tips for Accessible Colors</h4>
+        <ul class="about-list">
+          <li>Don't rely on color alone to convey meaning</li>
+          <li>Use patterns, icons, or text labels alongside color</li>
+          <li>Test with colorblind simulation tools (like this one!)</li>
+          <li>Check contrast ratios early in your design process</li>
+        </ul>
+
+        <p><small>Learn more at <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html" target="_blank" rel="noopener">W3C WCAG 2.1 Contrast (Minimum)</a></small></p>
+      </div>
+    </section>
+
+    <!-- Affiliate Section -->
+    <section class="affiliate">
+      <h2>Need a Full Accessibility Audit for Your Website?</h2>
+      <p>Color contrast is just one part of accessibility. These trusted partners can help with comprehensive audits and remediation:</p>
+      <div class="affiliate-links">
+        <a href="#" target="_blank" rel="noopener">[Accessibility Audit Partner]</a>
+        <a href="#" target="_blank" rel="noopener">[WCAG Compliance Service]</a>
+        <a href="#" target="_blank" rel="noopener">[Accessibility Testing Tool]</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <small><strong>accessiblitycolor.com</strong> &mdash; A free tool by <a href="https://caladandigital.com" class="footer-brand-link">Caladan Digital LLC</a></small>
+      <small>&copy; 2026 Caladan Digital LLC. Free and open to all.</small>
+    </footer>
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
