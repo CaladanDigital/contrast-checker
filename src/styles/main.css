@@ -1,4 +1,6 @@
 /* ====== SELF-HOSTED FONTS ====== */
+/* Casing matched exactly to GitHub public/fonts/ folder */
+
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/PlusJakartaSans-Light.woff2') format('woff2');
@@ -6,6 +8,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/PlusJakartaSans-Regular.woff2') format('woff2');
@@ -13,6 +16,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/PlusJakartaSans-Medium.woff2') format('woff2');
@@ -20,6 +24,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/PlusJakartaSans-SemiBold.woff2') format('woff2');
@@ -27,6 +32,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('/fonts/PlusJakartaSans-Bold.woff2') format('woff2');
@@ -34,6 +40,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Zodiak';
   src: url('/fonts/Zodiak-Regular.woff2') format('woff2');
@@ -41,6 +48,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Zodiak';
   src: url('/fonts/Zodiak-Bold.woff2') format('woff2');
@@ -48,6 +56,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Zodiak';
   src: url('/fonts/Zodiak-Extrabold.woff2') format('woff2');
@@ -84,7 +93,6 @@ h1, h2, h3 {
 
 h1 {
   font-size: 2.4rem;
-  font-weight: 700;
   line-height: 1.1;
   margin-bottom: 0.5rem;
   letter-spacing: -0.5px;
@@ -92,7 +100,6 @@ h1 {
 
 h2 {
   font-size: 1.6rem;
-  font-weight: 600;
   line-height: 1.15;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
@@ -101,7 +108,6 @@ h2 {
 
 h3 {
   font-size: 1.1rem;
-  font-weight: 600;
   line-height: 1.15;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
@@ -204,12 +210,6 @@ section:hover {
   line-height: 1.4;
 }
 
-.why-moral {
-  font-size: 1rem;
-  color: #444;
-  margin-bottom: 0.5rem;
-}
-
 /* ====== INPUT SECTION LAYOUT ====== */
 .input-section-layout {
   display: flex;
@@ -281,62 +281,6 @@ input[type="text"] {
   letter-spacing: 0.05em;
 }
 
-input[type="text"]:focus,
-input[type="color"]:focus {
-  outline: none;
-  border-color: #0066cc;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-}
-
-/* ====== BUTTONS ====== */
-button {
-  background: white;
-  color: #333;
-  border: 2px solid #ddd;
-  border-radius: 0.375rem;
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-button:hover {
-  background: #f5f5f5;
-  border-color: #999;
-}
-
-button:focus {
-  outline: none;
-  border-color: #0066cc;
-  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-}
-
-button:active {
-  background: #efefef;
-}
-
-.button-group {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-top: 1.5rem;
-}
-
-.eyedropper-btn {
-  width: 3.5rem;
-  height: 3.5rem;
-  padding: 0;
-  flex-shrink: 0;
-  font-size: 1.2rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
 /* ====== CONTRAST RATIO DISPLAY ====== */
 .contrast-result {
   background: linear-gradient(135deg, #f0f4ff 0%, #f9faff 100%);
@@ -354,14 +298,6 @@ button:active {
   color: #0066cc;
   line-height: 1;
   margin-bottom: 0.5rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.contrast-label {
-  font-size: 0.95rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 /* ====== WCAG BADGES ====== */
@@ -393,268 +329,28 @@ button:active {
   border-color: #dd8d8d;
 }
 
-.badge-level {
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-
-.badge-ratio {
-  font-size: 1.3rem;
-  font-variant-numeric: tabular-nums;
-  margin-top: 0.25rem;
-}
-
 /* ====== PREVIEW BOX ====== */
 .preview-box {
   border: 2px solid #ddd;
   border-radius: 0.375rem;
   padding: 2rem;
   margin: 1.5rem 0;
-  transition: all 0.15s;
-}
-
-.preview-item {
-  margin-bottom: 1.5rem;
-}
-
-.preview-item:last-child {
-  margin-bottom: 0;
-}
-
-.preview-label {
-  display: block;
-  font-size: 0.8rem;
-  opacity: 0.7;
-  margin-bottom: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 500;
 }
 
 .preview-heading {
+  font-family: 'Zodiak', serif;
   margin: 0;
   font-size: 2rem;
-}
-
-.preview-body {
-  margin: 0;
-}
-
-.preview-small {
-  margin: 0;
-  font-size: 0.875rem;
-}
-
-/* ====== COLORBLIND SIMULATIONS ====== */
-.simulations {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.simulation {
-  border: 2px solid #ddd;
-  border-radius: 0.375rem;
-  padding: 1.5rem;
-  background: #fafbfc;
-  transition: all 0.2s;
-}
-
-.simulation h4 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #333;
-}
-
-.simulation-preview {
-  border-radius: 0.25rem;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  font-weight: 500;
-  font-size: 0.95rem;
-  text-align: center;
-}
-
-.simulation-label {
-  font-size: 0.75rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* ====== SUGGESTIONS ====== */
-.suggestions {
-  background: #f0f9ff;
-  border: 2px solid #bae6fd;
-  border-radius: 0.375rem;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-}
-
-.suggestions h3 {
-  margin-top: 0;
-  color: #0369a1;
-}
-
-.suggestion-list {
-  list-style: none;
-  margin: 1rem 0;
-}
-
-.suggestion-list li {
-  padding: 0.75rem 0 0.75rem 1.5rem;
-  position: relative;
-  margin-bottom: 0.5rem;
-}
-
-.suggestion-list li:before {
-  content: "\2192";
-  position: absolute;
-  left: 0;
-  font-weight: 600;
-  color: #0369a1;
-}
-
-/* ====== AFFILIATE SECTION ====== */
-.affiliate {
-  background: linear-gradient(135deg, #f8f9fa 0%, #f0f4ff 100%);
-  border: 1px solid #e0e8ff;
-  border-radius: 0.5rem;
-  padding: 2rem;
-  margin: 2rem 0;
-}
-
-.affiliate h2 {
-  margin-top: 0;
-  font-size: 1.3rem;
-  color: #222;
-}
-
-.affiliate p {
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-.affiliate-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-.affiliate-links a {
-  display: inline-block;
-  padding: 0.75rem 1.25rem;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 0.375rem;
-  color: #0066cc;
-  transition: all 0.2s;
-  text-align: left;
-}
-
-.affiliate-links a:hover {
-  background: #f5f7ff;
-  border-color: #0066cc;
-}
-
-/* ====== FOOTER ====== */
-footer {
-  text-align: center;
-  padding: 2rem 0;
-  color: #666;
-  border-top: 1px solid #ddd;
-  margin-top: 3rem;
-}
-
-footer small {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-footer a {
-  color: #666;
-}
-
-/* ====== ABOUT MODAL ====== */
-.about-toggle {
-  background: #f5f5f5;
-  color: #0066cc;
-  border: none;
-  padding: 0.5rem 0;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.about-toggle:hover {
-  color: #0052a3;
-}
-
-.about-content {
-  display: none;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 0.375rem;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  margin-top: -0.5rem;
-}
-
-.about-content.show {
-  display: block;
-}
-
-.about-content h4 {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-.about-content h4:first-child {
-  margin-top: 0;
-}
-
-.about-list {
-  margin-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.footer-brand-link {
-  color: #2E86AB;
 }
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
   html {
     font-size: 100%;
-    line-height: 1.4;
   }
 
   h1 {
     font-size: 2rem;
-  }
-
-  h2 {
-    font-size: 1.4rem;
-  }
-
-  body {
-    padding: 1rem;
-  }
-
-  section {
-    padding: 1.5rem;
-  }
-
-  .header-cta {
-    font-size: 1rem;
-  }
-
-  .why-stats {
-    grid-template-columns: 1fr;
   }
 
   .input-section-layout {
@@ -663,60 +359,5 @@ footer a {
 
   .mini-preview {
     width: 100%;
-    min-height: 100px;
   }
-
-  .input-wrapper {
-    flex-direction: column;
-  }
-
-  input[type="text"] {
-    max-width: 100%;
-  }
-
-  .contrast-value {
-    font-size: 3rem;
-  }
-
-  .wcag-badges {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .simulations {
-    grid-template-columns: 1fr;
-  }
-
-  main {
-    max-width: 100%;
-  }
-
-  .button-group {
-    flex-direction: column;
-  }
-
-  button {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* ====== UTILITY ====== */
-.text-center {
-  text-align: center;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
 }
