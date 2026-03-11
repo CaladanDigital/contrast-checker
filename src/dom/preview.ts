@@ -9,4 +9,6 @@ export function updatePreview(fg: string, bg: string): void {
 
   previewBox.style.color = fg;
   previewBox.style.backgroundColor = bg;
+    const previewHeading = previewBox.querySelector('.preview-heading') as HTMLElement | null;
+      if (previewHeading) previewHeading.style.color = fg;
 }
