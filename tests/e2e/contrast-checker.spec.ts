@@ -72,7 +72,7 @@ test.describe('Color Contrast Checker', () => {
     const interactiveSelectors = [
       '#foregroundColor', '#foregroundHex',
       '#backgroundColor', '#backgroundHex',
-      '#swapButton', '#copyButton', '#shareButton', '#wcagToggle'
+      '#swapButton', '#copyButton', '#shareButton'
     ];
     for (const selector of interactiveSelectors) {
       const el = page.locator(selector);
@@ -112,7 +112,7 @@ test.describe('Color Contrast Checker', () => {
     await page.setViewportSize({ width: 375, height: 812 });
     const main = page.locator('main');
     await expect(main).toBeVisible();
-    // Verify no horizontal scroll
+    // Verify no significant horizontal scroll (allow small rounding)
     const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
     expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
@@ -156,13 +156,11 @@ test.describe('Color Contrast Checker', () => {
     expect(stats.length).toBe(3);
   });
 
-  test('WCAG education toggles visibility', async ({ page }) => {
-    const content = page.locator('#wcagContent');
-    await expect(content).toBeHidden();
-    await page.click('#wcagToggle');
-    await expect(content).toBeVisible();
-    await page.click('#wcagToggle');
-    await expect(content).toBeHidden();
+  test('WCAG guidelines section is visible', async ({ page }) => {
+    const guidelines = page.locator('#guidelinesSection');
+    await expect(guidelines).toBeVisible();
+    const cards = await page.$$('.guideline-card');
+    expect(cards.length).toBe(4);
   });
 
   // ===== MINI PREVIEW =====
