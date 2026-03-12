@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { getRelativeLuminance, getContrastRatio, formatRatio, checkWCAGCompliance } from '../../src/utils/contrastCalculation';
+import { getRelativeLuminance, getContrastRatio, formatRatio, checkWCAGCompliance, smartFixLightness } from '../../src/utils/contrastCalculation';
 
 describe('getRelativeLuminance', () => {
   test('pure black has luminance 0', () => {
@@ -128,5 +128,48 @@ describe('checkWCAGCompliance', () => {
     expect(results.aaLarge).toBe(true);
     expect(results.aaaNormal).toBe(false);
     expect(results.aaaLarge).toBe(false);
+  });
+});
+
+describe('smartFixLightness', () => {
+  test('fixes light-on-light pair (both light colors)', () => {
+    const fixed = smartFixLightness('#CCCCCC', '#FFFFFF');
+    expect(fixed).not.toBeNull();
+    const ratio = getContrastRatio(fixed!, '#FFFFFF');
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  test('fixes dark-on-dark pair (both dark colors)', () => {
+    const fixed = smartFixLightness('#333333', '#222222');
+    expect(fixed).not.toBeNull();
+    const ratio = getContrastRatio(fixed!, '#222222');
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  test('already-passing pair returns a valid hex', () => {
+    const fixed = smartFixLightness('#000000', '#FFFFFF');
+    expect(fixed).not.toBeNull();
+    // Should still pass (may return same or similar color)
+    const ratio = getContrastRatio(fixed!, '#FFFFFF');
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  test('returns null for invalid hex', () => {
+    expect(smartFixLightness('invalid', '#FFFFFF')).toBeNull();
+  });
+
+  test('respects custom target ratio', () => {
+    const fixed = smartFixLightness('#CCCCCC', '#FFFFFF', 7.0);
+    expect(fixed).not.toBeNull();
+    const ratio = getContrastRatio(fixed!, '#FFFFFF');
+    expect(ratio).toBeGreaterThanOrEqual(7.0);
+  });
+
+  test('finds closest lightness to original', () => {
+    // Gray on white - fix should darken, not jump to extremes
+    const fixed = smartFixLightness('#999999', '#FFFFFF');
+    expect(fixed).not.toBeNull();
+    // The fixed color should be darker than the original but not pure black
+    expect(fixed).not.toBe('#000000');
   });
 });

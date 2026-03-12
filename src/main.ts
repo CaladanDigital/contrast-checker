@@ -4,21 +4,33 @@
 import './styles/main.css';
 import { getContrastRatio, formatRatio, checkWCAGCompliance } from './utils/contrastCalculation';
 import { getInputElements, setupInputListeners } from './dom/inputs';
-import { updatePreview } from './dom/preview';
+import { updatePreview, updateMiniPreview } from './dom/preview';
 import { updateBadges } from './dom/badges';
 import { updateSimulations } from './dom/simulations';
 import { updateSuggestions } from './dom/suggestions';
+import { readColorsFromHash, writeColorsToHash, setupShareButton } from './dom/hashSync';
+import { setupEyeDroppers } from './dom/eyedropper';
+import { getHSLSliderElements, setupHSLSliders, syncHSLSliders } from './dom/hslSliders';
+import { setupCopyableHex } from './dom/copyHex';
 
 function init(): void {
   const elements = getInputElements();
+  const sliderEls = getHSLSliderElements();
 
   // Hero elements
   const heroPreviewSwatch = document.getElementById('heroPreviewSwatch') as HTMLElement | null;
   const heroPreviewText = document.getElementById('heroPreviewText') as HTMLElement | null;
   const heroPreviewRatio = document.getElementById('heroPreviewRatio') as HTMLElement | null;
-  const heroCtaBtn = document.getElementById('heroCtaBtn') as HTMLButtonElement | null;
   const heroPreviewBox = document.getElementById('heroPreviewBox') as HTMLElement | null;
-  const miniPreview = document.getElementById('miniPreview') as HTMLElement | null;
+
+  // Seed inputs from URL hash if present
+  const hashColors = readColorsFromHash();
+  if (hashColors) {
+    elements.fgHex.value = hashColors.fg;
+    elements.fgColor.value = hashColors.fg;
+    elements.bgHex.value = hashColors.bg;
+    elements.bgColor.value = hashColors.bg;
+  }
 
   function updateAll(): void {
     const fg = elements.fgHex.value;
@@ -38,6 +50,9 @@ function init(): void {
     // Update live preview
     updatePreview(fg, bg);
 
+    // Update mini preview
+    updateMiniPreview(fg, bg);
+
     // Update colorblind simulations
     updateSimulations(fg, bg);
 
@@ -51,24 +66,22 @@ function init(): void {
       heroPreviewText.textContent = 'Aa';
       heroPreviewRatio.textContent = formatRatio(ratio);
     }
+
+    // Sync HSL sliders
+    syncHSLSliders(sliderEls, fg, bg);
+
+    // Sync URL hash
+    writeColorsToHash(fg, bg);
   }
 
   // Set up input event listeners
   setupInputListeners(elements, updateAll);
 
-  // CTA button: focus foreground hex input and scroll to input section
-  if (heroCtaBtn) {
-    heroCtaBtn.addEventListener('click', () => {
-      const inputSection = document.getElementById('inputSection');
-      if (inputSection) {
-        inputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      setTimeout(() => {
-        elements.fgHex.focus();
-        elements.fgHex.select();
-      }, 400);
-    });
-  }
+  // Set up HSL sliders
+  setupHSLSliders(sliderEls, elements, updateAll);
+
+  // Set up click-to-copy hex codes
+  setupCopyableHex();
 
   // Hero preview box click: scroll to full live preview section
   if (heroPreviewBox) {
@@ -80,15 +93,11 @@ function init(): void {
     });
   }
 
-  // Mini-preview click: scroll to full live preview section
-  if (miniPreview) {
-    miniPreview.addEventListener('click', () => {
-      const previewSection = document.getElementById('previewSection');
-      if (previewSection) {
-        previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  }
+  // Share button
+  setupShareButton();
+
+  // Eye dropper (progressive enhancement)
+  setupEyeDroppers(elements, updateAll);
 
   // Initial update
   updateAll();

@@ -13,7 +13,6 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://accessibilitycolor.com">
   <meta property="og:image" content="https://accessibilitycolor.com/og-image.png">
-  <link href="https://api.fontshare.com/v2/css?f[]=zodiak@700&f[]=plus-jakarta-sans@400&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -40,9 +39,14 @@
         </div>
       </div>
     </section>
+
+    <!-- Input Section (Side-by-Side Pickers + Central Ratio) -->
     <section id="inputSection" class="section-card">
       <h2>Select Colors</h2>
-      <div class="input-controls input-controls--horizontal">
+
+      <div class="picker-row">
+        <!-- Foreground Picker -->
+        <div class="picker-col" id="fgPicker">
           <div class="input-group">
             <label for="foregroundColor">Foreground (Text) Color</label>
             <div class="input-wrapper">
@@ -50,6 +54,40 @@
               <input type="text" id="foregroundHex" value="#000000" maxlength="7" placeholder="#000000" aria-label="Foreground color hex input">
             </div>
           </div>
+
+          <div class="hsl-sliders">
+            <div class="slider-group">
+              <label for="fgHue">H</label>
+              <input type="range" id="fgHue" min="0" max="360" value="0" aria-label="Foreground hue">
+              <output id="fgHueOut">0</output>
+            </div>
+            <div class="slider-group">
+              <label for="fgSaturation">S</label>
+              <input type="range" id="fgSaturation" min="0" max="100" value="0" aria-label="Foreground saturation">
+              <output id="fgSaturationOut">0</output>
+            </div>
+            <div class="slider-group slider-group--prominent">
+              <label for="fgLightness">L</label>
+              <input type="range" id="fgLightness" min="0" max="100" value="0" aria-label="Foreground lightness">
+              <output id="fgLightnessOut">0</output>
+            </div>
+          </div>
+
+          <button class="smart-fix-btn" id="fgSmartFix" aria-label="Auto-fix foreground color for contrast">Smart Fix</button>
+        </div>
+
+        <!-- Central Ratio Display -->
+        <div class="ratio-center">
+          <div class="mini-preview" id="miniPreview">
+            <span class="mini-preview-text">Aa</span>
+          </div>
+          <div class="contrast-value" id="contrastRatio" role="status" aria-label="Contrast ratio">21:1</div>
+          <div class="contrast-label">Contrast Ratio</div>
+          <button id="swapButton" aria-label="Swap foreground and background colors">&#8596; Swap</button>
+        </div>
+
+        <!-- Background Picker -->
+        <div class="picker-col" id="bgPicker">
           <div class="input-group">
             <label for="backgroundColor">Background Color</label>
             <div class="input-wrapper">
@@ -57,18 +95,37 @@
               <input type="text" id="backgroundHex" value="#ffffff" maxlength="7" placeholder="#ffffff" aria-label="Background color hex input">
             </div>
           </div>
-          <div class="button-group">
-            <button id="swapButton" aria-label="Swap foreground and background colors">&#8596; Swap Colors</button>
-            <button id="copyButton" aria-label="Copy CSS to clipboard">&#128203; Copy CSS</button>
-            <button id="shareButton" aria-label="Copy shareable link to clipboard">&#128279; Share Link</button>
+
+          <div class="hsl-sliders">
+            <div class="slider-group">
+              <label for="bgHue">H</label>
+              <input type="range" id="bgHue" min="0" max="360" value="0" aria-label="Background hue">
+              <output id="bgHueOut">0</output>
+            </div>
+            <div class="slider-group">
+              <label for="bgSaturation">S</label>
+              <input type="range" id="bgSaturation" min="0" max="100" value="0" aria-label="Background saturation">
+              <output id="bgSaturationOut">0</output>
+            </div>
+            <div class="slider-group slider-group--prominent">
+              <label for="bgLightness">L</label>
+              <input type="range" id="bgLightness" min="0" max="100" value="100" aria-label="Background lightness">
+              <output id="bgLightnessOut">100</output>
+            </div>
           </div>
+
+          <button class="smart-fix-btn" id="bgSmartFix" aria-label="Auto-fix background color for contrast">Smart Fix</button>
         </div>
-    </section>
-    <section id="contrastSection" class="section-card">
-      <div class="contrast-result">
-        <div class="contrast-value" id="contrastRatio" role="status" aria-label="Contrast ratio">21:1</div>
-        <div class="contrast-label">Contrast Ratio</div>
       </div>
+
+      <div class="button-group">
+        <button id="copyButton" aria-label="Copy CSS to clipboard">&#128203; Copy CSS</button>
+        <button id="shareButton" aria-label="Copy shareable link to clipboard">&#128279; Share Link</button>
+      </div>
+    </section>
+
+    <!-- WCAG Compliance Badges -->
+    <section id="contrastSection" class="section-card">
       <h2>WCAG Compliance</h2>
       <div class="wcag-badges" id="wcagBadges">
         <div class="badge pass">
@@ -115,6 +172,7 @@
     <section id="colorblindSection" class="section-card">
       <h2>Colorblind Simulations</h2>
       <p>See how your color combination appears to people with color vision deficiencies:</p>
+      <p class="preview-note">Non-interactive previews — see how your colors appear under different vision types.</p>
       <div class="simulations" id="simulations">
         <div class="simulation">
           <h4>Normal Vision</h4>

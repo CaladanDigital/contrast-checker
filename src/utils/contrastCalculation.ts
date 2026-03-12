@@ -7,6 +7,7 @@
  */
 
 import { hexToRgb, type RGB } from './colorValidation';
+import { hexToHsl, hslToHex } from './colorConversion';
 
 /**
  * Calculate relative luminance per WCAG 2.1 formula.
@@ -74,4 +75,38 @@ export function checkWCAGCompliance(ratio: number): WCAGResults {
     aaaNormal: ratio >= 7,
     aaaLarge: ratio >= 4.5
   };
+}
+
+/**
+ * Find the nearest lightness adjustment that achieves the target contrast ratio.
+ * Searches both directions from current lightness, returns the closest passing hex.
+ * Returns null if no adjustment can achieve the target ratio.
+ */
+export function smartFixLightness(
+  targetHex: string,
+  otherHex: string,
+  targetRatio: number = 4.5
+): string | null {
+  const hsl = hexToHsl(targetHex);
+  if (!hsl) return null;
+
+  const currentL = hsl.l;
+  let bestHex: string | null = null;
+  let bestDistance = Infinity;
+
+  // Search both directions from current lightness
+  for (let newL = 0; newL <= 100; newL += 0.5) {
+    const candidate = hslToHex(hsl.h, hsl.s, newL);
+    const ratio = getContrastRatio(candidate, otherHex);
+
+    if (ratio >= targetRatio) {
+      const distance = Math.abs(newL - currentL);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestHex = candidate;
+      }
+    }
+  }
+
+  return bestHex;
 }

@@ -21,7 +21,6 @@ test.describe('Color Contrast Checker', () => {
 
   test('swap button exchanges foreground and background', async ({ page }) => {
     await page.fill('#foregroundHex', '#FF0000');
-    // Wait for update
     await page.waitForTimeout(100);
     await page.fill('#backgroundHex', '#0000FF');
     await page.waitForTimeout(100);
@@ -73,7 +72,7 @@ test.describe('Color Contrast Checker', () => {
     const interactiveSelectors = [
       '#foregroundColor', '#foregroundHex',
       '#backgroundColor', '#backgroundHex',
-      '#swapButton', '#copyButton', '#aboutToggle'
+      '#swapButton', '#copyButton', '#shareButton', '#wcagToggle'
     ];
     for (const selector of interactiveSelectors) {
       const el = page.locator(selector);
@@ -150,14 +149,85 @@ test.describe('Color Contrast Checker', () => {
     expect(requests).toEqual([]);
   });
 
-  // ===== ABOUT SECTION =====
+  // ===== WHY IT MATTERS / WCAG EDUCATION =====
 
-  test('about section toggles visibility', async ({ page }) => {
-    const content = page.locator('#aboutContent');
+  test('why it matters section displays stat cards', async ({ page }) => {
+    const stats = await page.$$('.stat-card');
+    expect(stats.length).toBe(3);
+  });
+
+  test('WCAG education toggles visibility', async ({ page }) => {
+    const content = page.locator('#wcagContent');
     await expect(content).toBeHidden();
-    await page.click('#aboutToggle');
+    await page.click('#wcagToggle');
     await expect(content).toBeVisible();
-    await page.click('#aboutToggle');
+    await page.click('#wcagToggle');
     await expect(content).toBeHidden();
+  });
+
+  // ===== MINI PREVIEW =====
+
+  test('mini preview updates with color changes', async ({ page }) => {
+    const miniPreview = page.locator('#miniPreview');
+    await expect(miniPreview).toBeVisible();
+    await page.fill('#foregroundHex', '#FF0000');
+    await page.waitForTimeout(100);
+    const color = await miniPreview.evaluate(el => el.style.color);
+    expect(color).toBeTruthy();
+  });
+
+  // ===== SHAREABLE URL =====
+
+  test('share button copies URL to clipboard', async ({ page, context, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Clipboard permissions only supported in Chromium');
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page.click('#shareButton');
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+    expect(clipboardText).toContain('fg=');
+    expect(clipboardText).toContain('bg=');
+  });
+
+  test('URL hash seeds colors on load', async ({ page }) => {
+    await page.goto('about:blank');
+    await page.goto('http://localhost:5173/#fg=FF0000&bg=00FF00', { waitUntil: 'networkidle' });
+    const fg = await page.inputValue('#foregroundHex');
+    const bg = await page.inputValue('#backgroundHex');
+    expect(fg.toUpperCase()).toContain('FF0000');
+    expect(bg.toUpperCase()).toContain('00FF00');
+  });
+
+  // ===== HSL SLIDERS =====
+
+  test('HSL sliders are present for both colors', async ({ page }) => {
+    await expect(page.locator('#fgHue')).toBeVisible();
+    await expect(page.locator('#fgSaturation')).toBeVisible();
+    await expect(page.locator('#fgLightness')).toBeVisible();
+    await expect(page.locator('#bgHue')).toBeVisible();
+    await expect(page.locator('#bgSaturation')).toBeVisible();
+    await expect(page.locator('#bgLightness')).toBeVisible();
+  });
+
+  test('HSL sliders sync with hex input on load', async ({ page }) => {
+    // Default fg is #000000 → L=0, bg is #FFFFFF → L=100
+    const fgL = await page.inputValue('#fgLightness');
+    const bgL = await page.inputValue('#bgLightness');
+    expect(fgL).toBe('0');
+    expect(bgL).toBe('100');
+  });
+
+  // ===== SMART FIX =====
+
+  test('Smart Fix buttons are present', async ({ page }) => {
+    await expect(page.locator('#fgSmartFix')).toBeVisible();
+    await expect(page.locator('#bgSmartFix')).toBeVisible();
+  });
+
+  // ===== COLORBLIND SIMULATIONS NON-INTERACTIVE =====
+
+  test('colorblind simulation boxes are non-interactive', async ({ page }) => {
+    const cursor = await page.locator('.simulation').first().evaluate(el => {
+      return window.getComputedStyle(el).cursor;
+    });
+    expect(cursor).toBe('default');
   });
 });

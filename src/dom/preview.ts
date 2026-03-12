@@ -12,3 +12,11 @@ export function updatePreview(fg: string, bg: string): void {
     const previewHeading = previewBox.querySelector('.preview-heading') as HTMLElement | null;
       if (previewHeading) previewHeading.style.color = fg;
 }
+
+export function updateMiniPreview(fg: string, bg: string): void {
+  const miniPreview = document.getElementById('miniPreview');
+  if (!miniPreview) return;
+
+  miniPreview.style.color = fg;
+  miniPreview.style.backgroundColor = bg;
+}
