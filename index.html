@@ -24,6 +24,7 @@
       <a href="#previewSection">Live Preview</a>
       <a href="#guidelinesSection">Guidelines</a>
     </nav>
+    <button class="bookmark-cta" id="bookmarkBtn" aria-label="Bookmark this page">&#9734; Bookmark</button>
   </header>
   <main>
     <section class="hero" id="heroSection">
@@ -57,17 +58,17 @@
 
           <div class="hsl-sliders">
             <div class="slider-group">
-              <label for="fgHue">H</label>
+              <label for="fgHue" title="Hue (0-360)">H</label>
               <input type="range" id="fgHue" min="0" max="360" value="0" aria-label="Foreground hue">
               <output id="fgHueOut">0</output>
             </div>
             <div class="slider-group">
-              <label for="fgSaturation">S</label>
+              <label for="fgSaturation" title="Saturation (0-100%)">S</label>
               <input type="range" id="fgSaturation" min="0" max="100" value="0" aria-label="Foreground saturation">
               <output id="fgSaturationOut">0</output>
             </div>
             <div class="slider-group slider-group--prominent">
-              <label for="fgLightness">L</label>
+              <label for="fgLightness" title="Lightness (0-100%)">L</label>
               <input type="range" id="fgLightness" min="0" max="100" value="0" aria-label="Foreground lightness">
               <output id="fgLightnessOut">0</output>
             </div>
@@ -98,17 +99,17 @@
 
           <div class="hsl-sliders">
             <div class="slider-group">
-              <label for="bgHue">H</label>
+              <label for="bgHue" title="Hue (0-360)">H</label>
               <input type="range" id="bgHue" min="0" max="360" value="0" aria-label="Background hue">
               <output id="bgHueOut">0</output>
             </div>
             <div class="slider-group">
-              <label for="bgSaturation">S</label>
+              <label for="bgSaturation" title="Saturation (0-100%)">S</label>
               <input type="range" id="bgSaturation" min="0" max="100" value="0" aria-label="Background saturation">
               <output id="bgSaturationOut">0</output>
             </div>
             <div class="slider-group slider-group--prominent">
-              <label for="bgLightness">L</label>
+              <label for="bgLightness" title="Lightness (0-100%)">L</label>
               <input type="range" id="bgLightness" min="0" max="100" value="100" aria-label="Background lightness">
               <output id="bgLightnessOut">100</output>
             </div>
@@ -127,6 +128,7 @@
     <!-- WCAG Compliance Badges -->
     <section id="contrastSection" class="section-card">
       <h2>WCAG Compliance</h2>
+      <p class="section-explainer">These badges show whether your color pair meets WCAG accessibility standards. Higher ratios mean better readability. <a href="#guidelinesSection">Learn more</a></p>
       <div class="wcag-badges" id="wcagBadges">
         <div class="badge pass">
           <div class="badge-icon"></div>
@@ -257,6 +259,7 @@
     <small><strong>accessibilitycolor.com</strong> &mdash; A free tool by <a href="https://caladandigital.com" class="footer-brand-link">Caladan Digital LLC</a></small>
     <small>&copy; 2026 Caladan Digital LLC. Free and open to all.</small>
   </footer>
+  <div class="toast" id="bookmarkToast" role="status" aria-live="polite"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

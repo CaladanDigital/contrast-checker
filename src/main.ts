@@ -96,6 +96,19 @@ function init(): void {
   // Share button
   setupShareButton();
 
+  // Bookmark CTA
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  const bookmarkToast = document.getElementById('bookmarkToast');
+  if (bookmarkBtn && bookmarkToast) {
+    bookmarkBtn.addEventListener('click', () => {
+      const isMac = navigator.platform.toUpperCase().includes('MAC');
+      const shortcut = isMac ? '\u2318+D' : 'Ctrl+D';
+      bookmarkToast.textContent = `Press ${shortcut} to bookmark this page`;
+      bookmarkToast.classList.add('show');
+      setTimeout(() => bookmarkToast.classList.remove('show'), 3000);
+    });
+  }
+
   // Eye dropper (progressive enhancement)
   setupEyeDroppers(elements, updateAll);
 

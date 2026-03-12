@@ -25,7 +25,7 @@ export function setupEyeDroppers(
     btn.type = 'button';
     btn.className = 'eyedropper-btn';
     btn.setAttribute('aria-label', 'Pick color from screen');
-    btn.textContent = '\uD83D\uDCA7';
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l1-1h3l9-9"/><path d="M3 21v-3l9-9"/><circle cx="17.5" cy="6.5" r="3.5"/></svg>';
 
     btn.addEventListener('click', async () => {
       try {

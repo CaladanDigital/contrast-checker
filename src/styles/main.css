@@ -105,6 +105,26 @@ a:hover { color: #0052a3; border-bottom-color: rgba(0,82,163,0.5); }
 }
 .site-nav a:hover { color: #0066cc; }
 
+/* ====== BOOKMARK CTA ====== */
+.bookmark-cta {
+  background: #0066cc; color: white; border: 2px solid #0066cc;
+  border-radius: 10px; padding: 0.4rem 1rem; font-size: 0.85rem;
+  font-weight: 600; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;
+}
+.bookmark-cta:hover { background: #0052a3; border-color: #0052a3; color: white; }
+
+/* ====== TOAST ====== */
+.toast {
+  position: fixed; top: 4.5rem; left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: #222; color: white; padding: 0.75rem 1.5rem;
+  border-radius: 10px; font-size: 0.9rem; font-weight: 500;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 200; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* ====== LAYOUT ====== */
 main { max-width: 55em; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
@@ -192,7 +212,7 @@ section:not(.section-card):not(.hero):not(.affiliate) {
 }
 .picker-col {
   flex: 1;
-  max-width: 320px;
+  min-width: 0;
 }
 .ratio-center {
   display: flex;
@@ -308,6 +328,11 @@ button:active { background: #eef2ff; }
   font-size: 1.2rem; display: inline-flex; align-items: center; justify-content: center;
 }
 
+/* ====== SECTION EXPLAINER ====== */
+.section-explainer {
+  font-size: 0.9rem; color: #666; margin-bottom: 1rem; line-height: 1.5;
+}
+
 /* ====== CONTRAST RATIO DISPLAY ====== */
 .contrast-result {
   background: linear-gradient(135deg, #f0f4ff 0%, #f9faff 100%);
@@ -410,9 +435,8 @@ button:active { background: #eef2ff; }
 .guideline-card {
   background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
   border: 2px solid #e0e8ff; border-radius: 14px; padding: 1.5rem;
-  text-align: center; transition: all 0.3s ease;
+  text-align: center;
 }
-.guideline-card:hover { border-color: #0066cc; box-shadow: 0 4px 12px rgba(0,102,204,0.1); }
 .guideline-level { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #666; margin-bottom: 0.5rem; }
 .guideline-ratio { font-family: 'Zodiak', Georgia, serif; font-size: 2rem; font-weight: 700; color: #0066cc; margin-bottom: 0.5rem; }
 .guideline-desc { font-size: 0.82rem; color: #666; line-height: 1.4; }

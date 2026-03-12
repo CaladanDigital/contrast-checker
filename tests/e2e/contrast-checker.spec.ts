@@ -72,7 +72,7 @@ test.describe('Color Contrast Checker', () => {
     const interactiveSelectors = [
       '#foregroundColor', '#foregroundHex',
       '#backgroundColor', '#backgroundHex',
-      '#swapButton', '#copyButton', '#shareButton'
+      '#swapButton', '#copyButton', '#shareButton', '#bookmarkBtn'
     ];
     for (const selector of interactiveSelectors) {
       const el = page.locator(selector);
@@ -221,6 +221,13 @@ test.describe('Color Contrast Checker', () => {
   });
 
   // ===== COLORBLIND SIMULATIONS NON-INTERACTIVE =====
+
+  test('guideline cards have no hover animation', async ({ page }) => {
+    const duration = await page.locator('.guideline-card').first().evaluate(el => {
+      return window.getComputedStyle(el).transitionDuration;
+    });
+    expect(duration).toBe('0s');
+  });
 
   test('colorblind simulation boxes are non-interactive', async ({ page }) => {
     const cursor = await page.locator('.simulation').first().evaluate(el => {
