@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://accessiblitycolor.com/sitemap.xml
+Sitemap: https://accessibilitycolor.com/sitemap.xml

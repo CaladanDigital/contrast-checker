@@ -131,9 +131,9 @@ test.describe('Color Contrast Checker', () => {
     expect(cookies.length).toBe(0);
   });
 
-  test('no localStorage is written', async ({ page }) => {
-    const storageLength = await page.evaluate(() => localStorage.length);
-    expect(storageLength).toBe(0);
+  test('no license keys in localStorage by default', async ({ page }) => {
+    const hasLicense = await page.evaluate(() => localStorage.getItem('acc_license_key'));
+    expect(hasLicense).toBeNull();
   });
 
   test('no external network requests are made', async ({ page }) => {

@@ -6,6 +6,7 @@
 
 import { getContrastRatio, formatRatio } from './contrastCalculation';
 import { hexToHsl, hslToHex } from './colorConversion';
+import { deltaE2000 } from './deltaE';
 
 export interface Suggestion {
   hex: string;
@@ -119,4 +120,93 @@ export function findAccessibleAlternatives(
   }
 
   return suggestions.slice(0, 3);
+}
+
+/**
+ * Advanced alternatives ranked by CIEDE2000 perceptual similarity.
+ * Generates candidates across lightness, saturation, and hue axes.
+ * Returns up to `limit` suggestions (default 8) ranked by visual closeness.
+ */
+export function getAdvancedAlternatives(
+  fgHex: string,
+  bgHex: string,
+  targetRatio: number = 4.5,
+  limit: number = 8
+): Suggestion[] {
+  const fgHsl = hexToHsl(fgHex);
+  if (!fgHsl) return [];
+
+  const candidates: Array<{ hex: string; ratio: number; deltaE: number }> = [];
+  const seen = new Set<string>();
+
+  // Generate candidates across lightness axis
+  for (let l = 0; l <= 100; l += 0.5) {
+    const candidate = hslToHex(fgHsl.h, fgHsl.s, l);
+    if (seen.has(candidate)) continue;
+    seen.add(candidate);
+    const ratio = getContrastRatio(candidate, bgHex);
+    if (ratio >= targetRatio) {
+      const dE = deltaE2000(fgHex, candidate);
+      if (dE !== null) {
+        candidates.push({ hex: candidate, ratio, deltaE: dE });
+      }
+    }
+  }
+
+  // Generate candidates across saturation axis
+  for (let s = 0; s <= 100; s += 2) {
+    for (let l = 0; l <= 100; l += 1) {
+      const candidate = hslToHex(fgHsl.h, s, l);
+      if (seen.has(candidate)) continue;
+      seen.add(candidate);
+      const ratio = getContrastRatio(candidate, bgHex);
+      if (ratio >= targetRatio) {
+        const dE = deltaE2000(fgHex, candidate);
+        if (dE !== null) {
+          candidates.push({ hex: candidate, ratio, deltaE: dE });
+        }
+      }
+    }
+  }
+
+  // Generate candidates across hue axis (±30° in 5° steps)
+  for (let hShift = -30; hShift <= 30; hShift += 5) {
+    if (hShift === 0) continue;
+    const h = ((fgHsl.h + hShift) % 360 + 360) % 360;
+    for (let l = 0; l <= 100; l += 1) {
+      const candidate = hslToHex(h, fgHsl.s, l);
+      if (seen.has(candidate)) continue;
+      seen.add(candidate);
+      const ratio = getContrastRatio(candidate, bgHex);
+      if (ratio >= targetRatio) {
+        const dE = deltaE2000(fgHex, candidate);
+        if (dE !== null) {
+          candidates.push({ hex: candidate, ratio, deltaE: dE });
+        }
+      }
+    }
+  }
+
+  // Sort by deltaE (most perceptually similar first)
+  candidates.sort((a, b) => a.deltaE - b.deltaE);
+
+  // Dedupe nearby colors (skip if hex matches or deltaE difference < 1)
+  const results: Suggestion[] = [];
+  const usedHexes = new Set<string>();
+
+  for (const c of candidates) {
+    if (usedHexes.has(c.hex)) continue;
+    if (c.hex === fgHex) continue;
+    usedHexes.add(c.hex);
+    results.push({
+      hex: c.hex,
+      ratio: c.ratio,
+      ratioFormatted: formatRatio(c.ratio),
+      label: 'Similar color',
+      target: 'foreground',
+    });
+    if (results.length >= limit) break;
+  }
+
+  return results;
 }

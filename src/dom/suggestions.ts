@@ -5,7 +5,8 @@
  * Background suggestions update the background input; foreground suggestions update the foreground input.
  */
 
-import { findAccessibleAlternatives, type Suggestion } from '../utils/accessibleAlternatives';
+import { findAccessibleAlternatives, getAdvancedAlternatives, type Suggestion } from '../utils/accessibleAlternatives';
+import { isPro } from '../utils/proGate';
 
 export function updateSuggestions(fg: string, bg: string, ratio: number): void {
   const section = document.getElementById('suggestionsSection');
@@ -106,4 +107,70 @@ export function updateSuggestions(fg: string, bg: string, ratio: number): void {
 
     list.appendChild(li);
   });
+
+  // Pro: Show More button for advanced suggestions
+  if (isPro()) {
+    const showMoreBtn = document.createElement('button');
+    showMoreBtn.className = 'suggestion-copy-btn';
+    showMoreBtn.style.marginTop = '1rem';
+    showMoreBtn.textContent = 'Show More Suggestions';
+    showMoreBtn.addEventListener('click', () => {
+      showMoreBtn.remove();
+      renderAdvancedSuggestions(list, fg, bg);
+    });
+    section.appendChild(showMoreBtn);
+  }
+}
+
+function renderAdvancedSuggestions(list: HTMLElement, fg: string, bg: string): void {
+  const advanced = getAdvancedAlternatives(fg, bg, 4.5, 8);
+  if (advanced.length === 0) return;
+
+  const heading = document.createElement('h4');
+  heading.textContent = 'More Alternatives (ranked by visual similarity)';
+  heading.style.marginTop = '1rem';
+  heading.style.color = '#0369a1';
+  list.parentElement?.appendChild(heading);
+
+  const grid = document.createElement('div');
+  grid.className = 'advanced-suggestions-grid';
+
+  advanced.forEach((suggestion: Suggestion) => {
+    const card = document.createElement('div');
+    card.className = 'advanced-suggestion-card';
+
+    const swatch = document.createElement('div');
+    swatch.className = 'advanced-suggestion-swatch';
+    swatch.style.backgroundColor = bg;
+    swatch.style.color = suggestion.hex;
+    swatch.textContent = 'Aa';
+
+    const hex = document.createElement('div');
+    hex.className = 'advanced-suggestion-hex';
+    hex.textContent = suggestion.hex;
+
+    const ratio = document.createElement('div');
+    ratio.className = 'advanced-suggestion-ratio';
+    ratio.textContent = suggestion.ratioFormatted;
+
+    card.appendChild(swatch);
+    card.appendChild(hex);
+    card.appendChild(ratio);
+
+    card.addEventListener('click', () => {
+      const fgColorInput = document.getElementById('foregroundColor') as HTMLInputElement | null;
+      const fgHexInput = document.getElementById('foregroundHex') as HTMLInputElement | null;
+      if (fgColorInput && fgHexInput) {
+        fgColorInput.value = suggestion.hex;
+        fgHexInput.value = suggestion.hex;
+        fgHexInput.dispatchEvent(new Event('input', { bubbles: true }));
+        const inputSection = document.getElementById('inputSection');
+        if (inputSection) inputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    grid.appendChild(card);
+  });
+
+  list.parentElement?.appendChild(grid);
 }
