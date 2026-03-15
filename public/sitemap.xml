@@ -10,4 +10,29 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://accessibilitycolor.com/blog/websites-fail-accessibility-color-contrast-tool/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://accessibilitycolor.com/blog/government-website-accessibility-deadlines/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://accessibilitycolor.com/blog/wcag-color-contrast-explained/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://accessibilitycolor.com/blog/disability-stats-inclusive-design/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://accessibilitycolor.com/blog/ada-web-accessibility-lawsuits/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

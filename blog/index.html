@@ -4,37 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog | Accessibility Color Checker</title>
-  <meta name="description" content="Tips, guides, and insights on color accessibility, WCAG compliance, and inclusive design.">
+  <meta name="description" content="Articles on ADA lawsuits, WCAG compliance, color contrast, and inclusive web design.">
   <meta name="author" content="Caladan Digital LLC">
   <meta property="og:title" content="Blog | Accessibility Color Checker">
-  <meta property="og:description" content="Tips, guides, and insights on color accessibility, WCAG compliance, and inclusive design.">
+  <meta property="og:description" content="Articles on ADA lawsuits, WCAG compliance, color contrast, and inclusive web design.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://accessibilitycolor.com/blog/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <style>
-    @font-face { font-family: 'Plus Jakarta Sans'; src: url('/fonts/PlusJakartaSans-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Plus Jakarta Sans'; src: url('/fonts/PlusJakartaSans-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Plus Jakarta Sans'; src: url('/fonts/PlusJakartaSans-SemiBold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Plus Jakarta Sans'; src: url('/fonts/PlusJakartaSans-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Zodiak'; src: url('/fonts/Zodiak-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Zodiak'; src: url('/fonts/Zodiak-Extrabold.woff2') format('woff2'); font-weight: 800; font-style: normal; font-display: swap; }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #f7f8fc; color: #333; line-height: 1.6; }
-    .header { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 2rem; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #e8eaf0; }
-    .logo { font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 1.05rem; color: #111; text-decoration: none; }
-    .logo:hover { color: #0066cc; }
-    nav { display: flex; gap: 1.5rem; }
-    nav a { font-size: 0.9rem; font-weight: 500; color: #555; text-decoration: none; }
-    nav a:hover { color: #0066cc; }
-    main { max-width: 42em; margin: 3rem auto; padding: 0 1.5rem; }
-    h1 { font-family: 'Zodiak', Georgia, serif; font-size: 2rem; margin-bottom: 1rem; color: #222; }
-    .coming-soon { background: white; border-radius: 16px; padding: 3rem; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
-    .coming-soon p { color: #666; font-size: 1.1rem; }
-    footer { text-align: center; padding: 2rem; color: #888; font-size: 0.85rem; }
-    footer a { color: #666; text-decoration: none; }
-  </style>
+  <link rel="stylesheet" href="blog.css">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NP9N5B5C');</script>
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NP9N5B5C" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
   <header class="header">
     <a href="/" class="logo">Accessibility Color Checker</a>
     <nav>
@@ -42,12 +26,44 @@
       <a href="/blog/">Blog</a>
     </nav>
   </header>
-  <main>
+
+  <div class="blog-header">
     <h1>Blog</h1>
-    <div class="coming-soon">
-      <p>Articles on color accessibility, WCAG compliance, and inclusive design coming soon.</p>
-    </div>
-  </main>
+    <p>Tips, guides, and insights on color accessibility, WCAG compliance, and inclusive design.</p>
+  </div>
+
+  <div class="post-grid">
+    <a href="/blog/websites-fail-accessibility-color-contrast-tool/" class="post-card">
+      <h2>Nearly 95% of Websites Fail Accessibility Standards: How a Color Contrast Checker Can Help</h2>
+      <p>The WebAIM Million 2025 report found 94.8% of top websites have accessibility failures. The #1 error? Low color contrast — and it's the easiest to fix.</p>
+      <span class="post-meta">March 15, 2026 · 5 min read</span>
+    </a>
+
+    <a href="/blog/government-website-accessibility-deadlines/" class="post-card">
+      <h2>Government Websites Are About to Face Strict Accessibility Deadlines</h2>
+      <p>The DOJ finalized a rule requiring state and local government websites to meet WCAG 2.1 AA standards. The first deadline is approaching fast.</p>
+      <span class="post-meta">March 15, 2026 · 5 min read</span>
+    </a>
+
+    <a href="/blog/wcag-color-contrast-explained/" class="post-card">
+      <h2>What Is WCAG Color Contrast and Why Does It Matter for Your Business?</h2>
+      <p>Color contrast ratios like 4.5:1 aren't random numbers. Here's what they mean, where they come from, and how to check your site in seconds.</p>
+      <span class="post-meta">March 15, 2026 · 5 min read</span>
+    </a>
+
+    <a href="/blog/disability-stats-inclusive-design/" class="post-card">
+      <h2>1 in 4 Americans Have a Disability: Is Your Website Leaving Them Behind?</h2>
+      <p>Over 70 million U.S. adults live with a disability. 73% will abandon a website that's hard to use. Here's what that means for your site.</p>
+      <span class="post-meta">March 15, 2026 · 5 min read</span>
+    </a>
+
+    <a href="/blog/ada-web-accessibility-lawsuits/" class="post-card">
+      <h2>Your Website Could Get You Sued: The Rise of ADA Web Accessibility Lawsuits</h2>
+      <p>Over 4,000 ADA digital accessibility lawsuits were filed in 2024, and 77% targeted companies under $25M in revenue. Here's what you need to know.</p>
+      <span class="post-meta">March 15, 2026 · 6 min read</span>
+    </a>
+  </div>
+
   <footer>
     <p>&copy; 2026 <a href="https://caladandigital.com">Caladan Digital LLC</a></p>
   </footer>
