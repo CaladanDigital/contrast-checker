@@ -91,6 +91,15 @@ function notifyListeners(): void {
 
 /** Restore Pro state from localStorage on module load. */
 export function initProGate(): void {
+  // Admin bypass: ?admin=true auto-activates Pro with test key
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('admin') === 'true') {
+      storeLicense('ACPRO-TEST-ADMN-KEY1', 'admin@accessibilitycolor.com');
+      return;
+    }
+  }
+
   const stored = getStoredLicense();
   if (stored && isValidLicenseKey(stored.key)) {
     proActive = true;

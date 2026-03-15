@@ -104,4 +104,22 @@ describe('proGate', () => {
     const stored = getStoredLicense();
     expect(stored!.email).toBe('test@example.com');
   });
+
+  test('initProGate activates Pro when ?admin=true is in URL', () => {
+    // Set up URL with admin param
+    Object.defineProperty(window, 'location', {
+      value: { search: '?admin=true' },
+      writable: true
+    });
+    initProGate();
+    expect(isPro()).toBe(true);
+    const stored = getStoredLicense();
+    expect(stored!.key).toBe('ACPRO-TEST-ADMN-KEY1');
+    expect(stored!.email).toBe('admin@accessibilitycolor.com');
+    // Restore
+    Object.defineProperty(window, 'location', {
+      value: { search: '' },
+      writable: true
+    });
+  });
 });
