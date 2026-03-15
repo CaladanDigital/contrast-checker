@@ -105,6 +105,58 @@ a:hover { color: #0052a3; border-bottom-color: rgba(0,82,163,0.5); }
 }
 .site-nav a:hover { color: #0066cc; }
 
+/* ====== NAV DROPDOWN ====== */
+.nav-dropdown { position: relative; }
+.nav-dropdown-trigger {
+  font-size: 0.9rem; font-weight: 500; color: #555; background: none;
+  border: none; padding: 0.25rem 0; cursor: pointer; transition: color 0.3s ease;
+  display: inline-flex; align-items: center; gap: 0.25rem; width: auto;
+}
+.nav-dropdown-trigger:hover { color: #0066cc; background: none; border: none; }
+.nav-dropdown-trigger:focus { outline: none; box-shadow: none; border: none; }
+.nav-dropdown-arrow { font-size: 0.7rem; transition: transform 0.2s ease; }
+.nav-dropdown[open] .nav-dropdown-arrow { transform: rotate(180deg); }
+.nav-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 0.5rem); left: 50%;
+  transform: translateX(-50%); background: white; border: 1px solid #e0e3eb;
+  border-radius: 12px; padding: 0.5rem 0; min-width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 110;
+}
+.nav-dropdown[open] .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 0.55rem 1.25rem; font-size: 0.85rem;
+  font-weight: 500; color: #444; border-bottom: none; transition: background 0.15s ease;
+}
+.nav-dropdown-menu a:hover { background: #f5f7ff; color: #0066cc; }
+
+/* ====== LOGO PRO PILL ====== */
+.logo-pro-pill {
+  display: inline-block; font-size: 0.55rem; font-weight: 700; color: white;
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  border-radius: 4px; padding: 0.1rem 0.4rem; text-transform: uppercase;
+  letter-spacing: 0.06em; vertical-align: middle; margin-left: 0.4rem;
+  position: relative; top: -1px;
+}
+
+/* ====== PRO MEMBER PRICING VIEW ====== */
+.pro-member-view { text-align: center; padding: 2rem 0; }
+.pro-member-view h2 { color: #0066cc; }
+.pro-member-heading { font-size: 1.6rem; margin-bottom: 1rem; color: #0066cc; }
+.pro-benefits-list {
+  list-style: none; max-width: 360px; margin: 1.5rem auto; text-align: left;
+}
+.pro-benefits-list li {
+  padding: 0.5rem 0 0.5rem 1.75rem; font-size: 0.95rem; color: #333;
+  position: relative;
+}
+.pro-benefits-list li::before {
+  content: "\2713"; position: absolute; left: 0; color: #1a7a1a; font-weight: 700;
+}
+.pro-member-suggestion {
+  font-size: 0.9rem; color: #666; margin-top: 2rem; line-height: 1.5;
+}
+.pro-member-suggestion a { color: #0066cc; }
+
 /* ====== BOOKMARK CTA ====== */
 .bookmark-cta {
   background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5);
@@ -782,6 +834,7 @@ footer a { color: #666; }
   .batch-matrix-wrap { -webkit-overflow-scrolling: touch; }
   .nudge-banner { bottom: 1rem; left: 0.75rem; right: 0.75rem; transform: none; }
   .modal-dialog { width: 95%; padding: 1.75rem; }
+  .nav-dropdown-menu { left: auto; right: 0; transform: none; min-width: 160px; }
 }
 
 /* ====== UTILITY ====== */
