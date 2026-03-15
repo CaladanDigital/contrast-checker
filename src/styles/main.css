@@ -417,8 +417,10 @@ button:active { background: #eef2ff; }
 }
 .suggestion-item:before { content: "\2192"; position: absolute; left: 0; font-weight: 600; color: #0369a1; }
 .suggestion-swatch {
-  display: inline-block; width: 28px; height: 28px; border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 4px;
   border: 1px solid rgba(0,0,0,0.2); flex-shrink: 0; vertical-align: middle;
+  font-size: 0.75rem; font-weight: 700; line-height: 1;
 }
 .suggestion-copy-btn {
   font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.7rem;
@@ -476,6 +478,9 @@ footer {
 }
 footer small { display: block; margin-bottom: 0.5rem; }
 footer a { color: #666; }
+.footer-logo-link { display: inline-block; border-bottom: none; margin-bottom: 1rem; }
+.footer-logo { max-width: 150px; height: auto; opacity: 0.7; transition: opacity 0.3s ease; }
+.footer-logo:hover { opacity: 1; }
 .footer-brand-link { color: #2E86AB; }
 
 /* ====== ABOUT TOGGLE ====== */

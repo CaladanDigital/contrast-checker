@@ -35,27 +35,36 @@ describe('findAccessibleAlternatives', () => {
     expect(suggestions).toEqual([]);
   });
 
-  test('returns at most 5 suggestions', () => {
+  test('returns at most 3 suggestions', () => {
     const suggestions = findAccessibleAlternatives('#CCCCCC', '#DDDDDD', 4.5);
-    expect(suggestions.length).toBeLessThanOrEqual(5);
+    expect(suggestions.length).toBeLessThanOrEqual(3);
   });
 
-  test('suggestions include hue-preserved adjustments', () => {
+  test('first suggestion is closest foreground match', () => {
     const suggestions = findAccessibleAlternatives('#FF9999', '#FFFFFF', 4.5);
-    // Should find at least one darker variant of the original hue
     expect(suggestions.length).toBeGreaterThan(0);
+    expect(suggestions[0].label).toBe('Closest match');
+    expect(suggestions[0].target).toBe('foreground');
   });
 
-  test('suggestions include background adjustments', () => {
+  test('includes background adjustment suggestion', () => {
     const suggestions = findAccessibleAlternatives('#888888', '#999999', 4.5);
-    const bgSuggestion = suggestions.find(s => s.label.startsWith('Background:'));
+    const bgSuggestion = suggestions.find(s => s.label === 'Adjust background');
     expect(bgSuggestion).toBeDefined();
+    expect(bgSuggestion!.target).toBe('background');
+  });
+
+  test('includes hue shift suggestion', () => {
+    const suggestions = findAccessibleAlternatives('#FF9999', '#FFFFFF', 4.5);
+    const hueSuggestion = suggestions.find(s => s.label === 'Similar shade');
+    expect(hueSuggestion).toBeDefined();
+    expect(hueSuggestion!.target).toBe('foreground');
   });
 
   test('suggestion ratios are verified against getContrastRatio', () => {
     const suggestions = findAccessibleAlternatives('#AAAAAA', '#FFFFFF', 4.5);
     for (const s of suggestions) {
-      if (!s.label.startsWith('Background:')) {
+      if (s.target === 'foreground') {
         const actualRatio = getContrastRatio(s.hex, '#FFFFFF');
         expect(Math.abs(actualRatio - s.ratio)).toBeLessThan(0.01);
       }
@@ -65,7 +74,6 @@ describe('findAccessibleAlternatives', () => {
   test('works with different target ratios', () => {
     const suggestionsAA = findAccessibleAlternatives('#AAAAAA', '#FFFFFF', 4.5);
     const suggestionsAAA = findAccessibleAlternatives('#AAAAAA', '#FFFFFF', 7.0);
-    // AAA suggestions should have higher contrast ratios
     if (suggestionsAAA.length > 0) {
       expect(suggestionsAAA[0].ratio).toBeGreaterThanOrEqual(7.0);
     }
@@ -77,40 +85,45 @@ describe('findAccessibleAlternatives', () => {
   });
 
   test('handles green-dominant foreground colors', () => {
-    // Green max channel hits case g in rgbToHsl
     const suggestions = findAccessibleAlternatives('#33FF33', '#FFFFFF', 4.5);
     expect(suggestions.length).toBeGreaterThan(0);
   });
 
   test('handles blue-dominant foreground colors', () => {
-    // Blue max channel hits case b in rgbToHsl
     const suggestions = findAccessibleAlternatives('#3333FF', '#FFFFFF', 4.5);
     expect(suggestions.length).toBeGreaterThan(0);
   });
 
   test('handles achromatic (gray) foreground colors', () => {
-    // s === 0 path in hslToRgb
     const suggestions = findAccessibleAlternatives('#808080', '#FFFFFF', 4.5);
     expect(suggestions.length).toBeGreaterThan(0);
   });
 
   test('handles red-dominant foreground where g < b', () => {
-    // Hits the g < b branch in case r of rgbToHsl
     const suggestions = findAccessibleAlternatives('#FF0033', '#FFFFFF', 4.5);
     expect(suggestions.length).toBeGreaterThan(0);
   });
 
   test('handles high-saturation high-lightness foreground', () => {
-    // Hits l > 0.5 branch in rgbToHsl saturation calc
     const suggestions = findAccessibleAlternatives('#FFAAAA', '#FFFFFF', 4.5);
     expect(suggestions.length).toBeGreaterThan(0);
   });
 
-  test('each suggestion has a label', () => {
+  test('each suggestion has a label and target', () => {
     const suggestions = findAccessibleAlternatives('#BBBBBB', '#FFFFFF', 4.5);
     for (const s of suggestions) {
       expect(s.label).toBeTruthy();
       expect(typeof s.label).toBe('string');
+      expect(['foreground', 'background']).toContain(s.target);
+    }
+  });
+
+  test('background suggestion ratio is correct against original foreground', () => {
+    const suggestions = findAccessibleAlternatives('#888888', '#999999', 4.5);
+    const bgSuggestion = suggestions.find(s => s.target === 'background');
+    if (bgSuggestion) {
+      const actualRatio = getContrastRatio('#888888', bgSuggestion.hex);
+      expect(Math.abs(actualRatio - bgSuggestion.ratio)).toBeLessThan(0.01);
     }
   });
 });

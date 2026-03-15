@@ -1,7 +1,8 @@
 /**
  * Accessible alternative display.
  * Shows suggested color alternatives when contrast fails WCAG AA.
- * Each suggestion includes a color swatch and a copy button to apply the color.
+ * Each suggestion includes a color swatch and a button to apply the color.
+ * Background suggestions update the background input; foreground suggestions update the foreground input.
  */
 
 import { findAccessibleAlternatives, type Suggestion } from '../utils/accessibleAlternatives';
@@ -38,7 +39,17 @@ export function updateSuggestions(fg: string, bg: string, ratio: number): void {
     // Color swatch showing the suggested color
     const swatch = document.createElement('span');
     swatch.className = 'suggestion-swatch';
-    swatch.style.backgroundColor = suggestion.hex;
+    if (suggestion.target === 'background') {
+      // Show foreground text on suggested background
+      swatch.style.backgroundColor = suggestion.hex;
+      swatch.style.color = fg;
+      swatch.textContent = 'Aa';
+    } else {
+      // Show suggested foreground on current background
+      swatch.style.backgroundColor = bg;
+      swatch.style.color = suggestion.hex;
+      swatch.textContent = 'Aa';
+    }
     swatch.setAttribute('aria-hidden', 'true');
     li.appendChild(swatch);
 
@@ -55,24 +66,42 @@ export function updateSuggestions(fg: string, bg: string, ratio: number): void {
     const ratioText = document.createTextNode(` (ratio: ${suggestion.ratioFormatted})`);
     li.appendChild(ratioText);
 
-    // Copy button to apply the suggested color to the foreground input
+    // Button to apply the suggested color
     const copyBtn = document.createElement('button');
     copyBtn.className = 'suggestion-copy-btn';
     copyBtn.textContent = 'Use this';
-    copyBtn.setAttribute('aria-label', `Apply ${suggestion.hex} as foreground color`);
-    copyBtn.addEventListener('click', () => {
-      const fgColorInput = document.getElementById('foregroundColor') as HTMLInputElement | null;
-      const fgHexInput = document.getElementById('foregroundHex') as HTMLInputElement | null;
-      if (fgColorInput && fgHexInput) {
-        fgColorInput.value = suggestion.hex;
-        fgHexInput.value = suggestion.hex;
-        fgHexInput.dispatchEvent(new Event('input', { bubbles: true }));
-        const inputSection = document.getElementById('inputSection');
-        if (inputSection) {
-          inputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (suggestion.target === 'background') {
+      copyBtn.setAttribute('aria-label', `Apply ${suggestion.hex} as background color`);
+      copyBtn.addEventListener('click', () => {
+        const bgColorInput = document.getElementById('backgroundColor') as HTMLInputElement | null;
+        const bgHexInput = document.getElementById('backgroundHex') as HTMLInputElement | null;
+        if (bgColorInput && bgHexInput) {
+          bgColorInput.value = suggestion.hex;
+          bgHexInput.value = suggestion.hex;
+          bgHexInput.dispatchEvent(new Event('input', { bubbles: true }));
+          const inputSection = document.getElementById('inputSection');
+          if (inputSection) {
+            inputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }
-      }
-    });
+      });
+    } else {
+      copyBtn.setAttribute('aria-label', `Apply ${suggestion.hex} as foreground color`);
+      copyBtn.addEventListener('click', () => {
+        const fgColorInput = document.getElementById('foregroundColor') as HTMLInputElement | null;
+        const fgHexInput = document.getElementById('foregroundHex') as HTMLInputElement | null;
+        if (fgColorInput && fgHexInput) {
+          fgColorInput.value = suggestion.hex;
+          fgHexInput.value = suggestion.hex;
+          fgHexInput.dispatchEvent(new Event('input', { bubbles: true }));
+          const inputSection = document.getElementById('inputSection');
+          if (inputSection) {
+            inputSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    }
     li.appendChild(copyBtn);
 
     list.appendChild(li);

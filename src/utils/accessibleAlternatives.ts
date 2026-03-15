@@ -1,108 +1,122 @@
 /**
  * Suggest accessible color alternatives when contrast fails WCAG AA.
- * Tries hue-preserved adjustments first, then grayscale fallbacks.
+ * Produces 3 focused suggestions: closest foreground fix, closest background fix,
+ * and a slight hue shift — all visually close to the original colors.
  */
 
-import { hexToRgb, rgbToHex } from './colorValidation';
 import { getContrastRatio, formatRatio } from './contrastCalculation';
-import { rgbToHsl, hslToRgb } from './colorConversion';
+import { hexToHsl, hslToHex } from './colorConversion';
 
 export interface Suggestion {
   hex: string;
   ratio: number;
   ratioFormatted: string;
   label: string;
+  target: 'foreground' | 'background';
+}
+
+/**
+ * Find the nearest lightness that achieves the target contrast ratio.
+ * Searches in 0.5% steps from the current lightness outward.
+ */
+function findNearestPassingLightness(
+  h: number,
+  s: number,
+  currentL: number,
+  otherHex: string,
+  targetRatio: number,
+  mode: 'fg' | 'bg'
+): { hex: string; ratio: number } | null {
+  let bestHex: string | null = null;
+  let bestRatio = 0;
+  let bestDistance = Infinity;
+
+  for (let newL = 0; newL <= 100; newL += 0.5) {
+    const candidate = hslToHex(h, s, newL);
+    const ratio = mode === 'fg'
+      ? getContrastRatio(candidate, otherHex)
+      : getContrastRatio(otherHex, candidate);
+
+    if (ratio >= targetRatio) {
+      const distance = Math.abs(newL - currentL);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestHex = candidate;
+        bestRatio = ratio;
+      }
+    }
+  }
+
+  return bestHex ? { hex: bestHex, ratio: bestRatio } : null;
 }
 
 /**
  * Find accessible color alternatives for a foreground/background pair.
- * Returns multiple suggestions ranked by visual similarity to original.
+ * Returns up to 3 focused suggestions ranked by visual similarity.
  */
 export function findAccessibleAlternatives(
   fgHex: string,
   bgHex: string,
   targetRatio: number = 4.5
 ): Suggestion[] {
-  const fgRgb = hexToRgb(fgHex);
-  if (!fgRgb) return [];
+  const fgHsl = hexToHsl(fgHex);
+  const bgHsl = hexToHsl(bgHex);
+  if (!fgHsl) return [];
 
   const suggestions: Suggestion[] = [];
   const seen = new Set<string>();
 
-  // Strategy 1: Hue-preserved foreground adjustments (darken/lighten)
-  const { h, s, l } = rgbToHsl(fgRgb.r, fgRgb.g, fgRgb.b);
+  // Strategy 1: Closest foreground fix — adjust foreground lightness only
+  const fgFix = findNearestPassingLightness(
+    fgHsl.h, fgHsl.s, fgHsl.l, bgHex, targetRatio, 'fg'
+  );
+  if (fgFix && !seen.has(fgFix.hex)) {
+    seen.add(fgFix.hex);
+    suggestions.push({
+      hex: fgFix.hex,
+      ratio: fgFix.ratio,
+      ratioFormatted: formatRatio(fgFix.ratio),
+      label: 'Closest match',
+      target: 'foreground',
+    });
+  }
 
-  for (let newL = 0; newL <= 100; newL += 1) {
-    const [r, g, b] = hslToRgb(h, s, newL);
-    const hex = rgbToHex(r, g, b);
-    if (seen.has(hex)) continue;
-    seen.add(hex);
-
-    const ratio = getContrastRatio(hex, bgHex);
-    if (ratio >= targetRatio) {
-      const distance = Math.abs(newL - l);
+  // Strategy 2: Closest background fix — adjust background lightness only
+  if (bgHsl) {
+    const bgFix = findNearestPassingLightness(
+      bgHsl.h, bgHsl.s, bgHsl.l, fgHex, targetRatio, 'bg'
+    );
+    if (bgFix && !seen.has(bgFix.hex + '-bg')) {
+      seen.add(bgFix.hex + '-bg');
       suggestions.push({
-        hex,
-        ratio,
-        ratioFormatted: formatRatio(ratio),
-        label: newL < l ? `Darker ${fgHex}` : `Lighter ${fgHex}`
+        hex: bgFix.hex,
+        ratio: bgFix.ratio,
+        ratioFormatted: formatRatio(bgFix.ratio),
+        label: 'Adjust background',
+        target: 'background',
       });
-      // Only keep closest matches for hue-preserved
-      if (suggestions.length >= 3 && distance > 20) break;
     }
   }
 
-  // Sort by visual similarity (closest lightness to original)
-  suggestions.sort((a, b) => {
-    const aRgb = hexToRgb(a.hex)!;
-    const bRgb = hexToRgb(b.hex)!;
-    const aDist = Math.abs(aRgb.r - fgRgb.r) + Math.abs(aRgb.g - fgRgb.g) + Math.abs(aRgb.b - fgRgb.b);
-    const bDist = Math.abs(bRgb.r - fgRgb.r) + Math.abs(bRgb.g - fgRgb.g) + Math.abs(bRgb.b - fgRgb.b);
-    return aDist - bDist;
-  });
-
-  // Strategy 2: Adjust background instead
-  const bgRgb = hexToRgb(bgHex);
-  if (bgRgb) {
-    const { h: bh, s: bs, l: bl } = rgbToHsl(bgRgb.r, bgRgb.g, bgRgb.b);
-    for (let newL = 0; newL <= 100; newL += 1) {
-      const [r, g, b] = hslToRgb(bh, bs, newL);
-      const hex = rgbToHex(r, g, b);
-      if (seen.has(hex + '-bg')) continue;
-      seen.add(hex + '-bg');
-
-      const ratio = getContrastRatio(fgHex, hex);
-      if (ratio >= targetRatio) {
-        const distance = Math.abs(newL - bl);
-        suggestions.push({
-          hex,
-          ratio,
-          ratioFormatted: formatRatio(ratio),
-          label: `Background: ${hex}`
-        });
-        if (distance > 20) break;
-      }
-    }
-  }
-
-  // Strategy 3: Grayscale fallback
-  for (let i = 0; i <= 255; i += 5) {
-    const hex = rgbToHex(i, i, i);
-    if (seen.has(hex)) continue;
-    seen.add(hex);
-
-    const ratio = getContrastRatio(hex, bgHex);
-    if (ratio >= targetRatio) {
+  // Strategy 3: Slight hue shift — try ±15° and ±30° hue shifts with minimal lightness adjustment
+  const hueShifts = [15, -15, 30, -30];
+  for (const shift of hueShifts) {
+    const shiftedH = ((fgHsl.h + shift) % 360 + 360) % 360;
+    const hueFix = findNearestPassingLightness(
+      shiftedH, fgHsl.s, fgHsl.l, bgHex, targetRatio, 'fg'
+    );
+    if (hueFix && !seen.has(hueFix.hex)) {
+      seen.add(hueFix.hex);
       suggestions.push({
-        hex,
-        ratio,
-        ratioFormatted: formatRatio(ratio),
-        label: `Grayscale: ${hex}`
+        hex: hueFix.hex,
+        ratio: hueFix.ratio,
+        ratioFormatted: formatRatio(hueFix.ratio),
+        label: 'Similar shade',
+        target: 'foreground',
       });
-      break; // Just one grayscale suggestion
+      break; // Only need one hue-shift suggestion
     }
   }
 
-  // Return top suggestions, max 5
-  return suggestions.slice(0, 5);
+  return suggestions.slice(0, 3);
 }
