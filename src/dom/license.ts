@@ -171,6 +171,18 @@ function buildModalContent(): HTMLElement {
     form.appendChild(errorEl);
     form.appendChild(activateBtn);
     dialog.appendChild(form);
+
+    const helpP = document.createElement('p');
+    helpP.style.fontSize = '0.85rem';
+    helpP.style.color = '#888';
+    helpP.style.marginTop = '1rem';
+    helpP.textContent = 'Need help logging in? Reach out to ';
+    const helpLink = document.createElement('a');
+    helpLink.href = 'mailto:info@caladandigital.com';
+    helpLink.textContent = 'info@caladandigital.com';
+    helpP.appendChild(helpLink);
+    helpP.appendChild(document.createTextNode('.'));
+    dialog.appendChild(helpP);
   }
 
   const closeBtn = createEl('button', { text: '\u00D7', className: 'modal-close' });
@@ -288,6 +300,19 @@ function setupFeaturesDropdown(): void {
     return dropdown!.hasAttribute('open');
   }
 
+  let closeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  // Open on hover
+  dropdown.addEventListener('mouseenter', () => {
+    if (closeTimeout) { clearTimeout(closeTimeout); closeTimeout = null; }
+    openDropdown();
+  });
+
+  dropdown.addEventListener('mouseleave', () => {
+    closeTimeout = setTimeout(() => closeDropdown(), 150);
+  });
+
+  // Click fallback for touch
   trigger.addEventListener('click', (e) => {
     e.preventDefault();
     if (isOpen()) {
