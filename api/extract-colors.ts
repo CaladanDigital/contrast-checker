@@ -48,17 +48,43 @@ const NAMED_COLORS: Record<string, string> = {
   lightsteelblue:'#b0c4de',
 };
 
+/** Check if a hostname is private/reserved (SSRF protection). */
+function isPrivateHost(hostname: string): boolean {
+  const host = hostname.toLowerCase();
+
+  // Loopback
+  if (host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '::1') return true;
+
+  // Private RFC1918 ranges
+  if (host.startsWith('192.168.') || host.startsWith('10.')) return true;
+  if (/^172\.(1[6-9]|2\d|3[01])\./.test(host)) return true;
+
+  // Link-local & metadata services (AWS/Azure/GCP)
+  if (host.startsWith('169.254.')) return true;
+  if (host === 'metadata.google.internal' || host === 'metadata.azure.com') return true;
+  if (host === 'kubernetes.default.svc') return true;
+
+  // IPv4-mapped IPv6 (::ffff:127.0.0.1, ::ffff:a9fe:a9fe, etc.)
+  if (host.startsWith('::ffff:')) return true;
+  if (/^\[?::f{4}:/i.test(host)) return true;
+
+  // Reserved TLDs
+  if (host.endsWith('.local') || host.endsWith('.internal') || host.endsWith('.localhost')) return true;
+
+  // Catch-all: block any bare IPv6 address
+  if (host.includes(':')) return true;
+
+  // Block 0.0.0.0/8 range
+  if (/^0\./.test(host)) return true;
+
+  return false;
+}
+
 /** Check if a URL points to a private/reserved IP range. */
 function isPrivateUrl(urlStr: string): boolean {
   try {
     const u = new URL(urlStr);
-    const host = u.hostname;
-    // Block obvious private hosts
-    if (host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '::1') return true;
-    if (host.startsWith('192.168.') || host.startsWith('10.')) return true;
-    if (/^172\.(1[6-9]|2\d|3[01])\./.test(host)) return true;
-    if (host.endsWith('.local') || host.endsWith('.internal')) return true;
-    return false;
+    return isPrivateHost(u.hostname);
   } catch {
     return true;
   }
@@ -300,14 +326,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     allCSS.push(extractInlineStyles(html));
     allCSS.push(extractStyleBlocks(html));
 
-    // Fetch external stylesheets (parallel, with timeouts)
+    // Fetch external stylesheets (parallel, with timeouts + SSRF validation)
     const sheetUrls = extractStylesheetUrls(html, url);
     const sheetPromises = sheetUrls.map(async (sheetUrl) => {
       try {
+        // Validate each stylesheet URL against SSRF
+        if (isPrivateUrl(sheetUrl)) return '';
+        const sheetParsed = new URL(sheetUrl);
+        if (!['http:', 'https:'].includes(sheetParsed.protocol)) return '';
+
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), 3000);
         const resp = await fetch(sheetUrl, {
           signal: ctrl.signal,
+          redirect: 'manual',
           headers: { 'User-Agent': 'Mozilla/5.0 (compatible; AccessibilityColorBot/1.0)' },
         });
         clearTimeout(t);
