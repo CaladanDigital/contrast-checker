@@ -262,6 +262,11 @@
       <h2>Support This Tool</h2>
       <p class="section-explainer">Accessibility Color Checker is free and always will be. If it saves you time, consider buying us a coffee to help keep it running.</p>
       <div style="text-align: center; margin-top: 1.5rem;">
+        <a href="https://buymeacoffee.com/caladandigital" target="_blank" rel="noopener noreferrer"
+           id="bmcInlineBtn"
+           style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: #2563EB; color: #fff; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1rem;">
+          ☕ Buy Me a Coffee
+        </a>
         <script data-name="BMC-Widget"
           data-cfasync="false"
           src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
@@ -273,11 +278,12 @@
           data-x_margin="18"
           data-y_margin="18">
         </script>
-        <noscript>
-          <a href="https://buymeacoffee.com/caladandigital" target="_blank" rel="noopener noreferrer">
-            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 48px; width: 174px;">
-          </a>
-        </noscript>
+        <script>
+          document.getElementById('bmcInlineBtn').addEventListener('click', function(e) {
+            var bmcBtn = document.querySelector('.bmc-btn');
+            if (bmcBtn) { e.preventDefault(); bmcBtn.click(); }
+          });
+        </script>
       </div>
     </section>
 
