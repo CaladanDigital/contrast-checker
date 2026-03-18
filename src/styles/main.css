@@ -106,13 +106,13 @@ a:hover { color: #0052a3; border-bottom-color: rgba(0,82,163,0.5); }
   position: relative;
 }
 .site-nav a:hover { color: #0066cc; }
-.site-nav > a::after,
+.site-nav > a:not(.support-btn)::after,
 .nav-dropdown-trigger::after {
   content: ''; position: absolute; bottom: 0; left: 0;
   width: 0; height: 2px; background: #0066cc;
   transition: width 0.3s ease;
 }
-.site-nav > a:hover::after,
+.site-nav > a:not(.support-btn):hover::after,
 .nav-dropdown-trigger:hover::after { width: 100%; }
 
 /* ====== NAV DROPDOWN ====== */
