@@ -12,12 +12,8 @@ import { readColorsFromHash, writeColorsToHash, setupShareButton } from './dom/h
 import { setupEyeDroppers } from './dom/eyedropper';
 import { getHSLSliderElements, setupHSLSliders, syncHSLSliders } from './dom/hslSliders';
 import { setupCopyableHex } from './dom/copyHex';
-import { setupLicenseUI } from './dom/license';
-import { onProStatusChange } from './utils/proGate';
-import { setupProUpgrade } from './dom/proUpgrade';
-import { setupBatchPalette } from './dom/batchPalette';
+import { setupFeaturesDropdown } from './dom/featuresDropdown';
 import { setupPdfExport } from './dom/pdfExport';
-import { setupSavedPalettes } from './dom/savedPalettes';
 import { setupLiveView } from './dom/liveView';
 
 function init(): void {
@@ -119,16 +115,10 @@ function init(): void {
   // Eye dropper (progressive enhancement)
   setupEyeDroppers(elements, updateAll);
 
-  // Pro features
-  setupLicenseUI();
-  setupProUpgrade();
-  setupBatchPalette();
+  // Features dropdown, PDF export, live view
+  setupFeaturesDropdown();
   setupPdfExport();
-  setupSavedPalettes();
   setupLiveView();
-
-  // Re-render Pro-gated sections when license status changes
-  onProStatusChange(() => updateAll());
 
   // Initial update
   updateAll();

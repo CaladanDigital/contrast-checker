@@ -6,7 +6,6 @@
  */
 
 import { findAccessibleAlternatives, getAdvancedAlternatives, type Suggestion } from '../utils/accessibleAlternatives';
-import { isPro } from '../utils/proGate';
 
 export function updateSuggestions(fg: string, bg: string, ratio: number): void {
   const section = document.getElementById('suggestionsSection');
@@ -108,18 +107,16 @@ export function updateSuggestions(fg: string, bg: string, ratio: number): void {
     list.appendChild(li);
   });
 
-  // Pro: Show More button for advanced suggestions
-  if (isPro()) {
-    const showMoreBtn = document.createElement('button');
-    showMoreBtn.className = 'suggestion-copy-btn';
-    showMoreBtn.style.marginTop = '1rem';
-    showMoreBtn.textContent = 'Show More Suggestions';
-    showMoreBtn.addEventListener('click', () => {
-      showMoreBtn.remove();
-      renderAdvancedSuggestions(list, fg, bg);
-    });
-    section.appendChild(showMoreBtn);
-  }
+  // Show More button for advanced suggestions
+  const showMoreBtn = document.createElement('button');
+  showMoreBtn.className = 'suggestion-copy-btn';
+  showMoreBtn.style.marginTop = '1rem';
+  showMoreBtn.textContent = 'Show More Suggestions';
+  showMoreBtn.addEventListener('click', () => {
+    showMoreBtn.remove();
+    renderAdvancedSuggestions(list, fg, bg);
+  });
+  section.appendChild(showMoreBtn);
 }
 
 function renderAdvancedSuggestions(list: HTMLElement, fg: string, bg: string): void {

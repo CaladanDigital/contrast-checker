@@ -4,7 +4,6 @@
  */
 
 import { formatRatio, type WCAGResults } from './contrastCalculation';
-import type { PairResult } from './batchChecker';
 
 export interface ReportData {
   projectName: string;
@@ -13,7 +12,6 @@ export interface ReportData {
   bg: string;
   ratio: number;
   wcag: WCAGResults;
-  batchResults?: PairResult[];
 }
 
 /**
@@ -134,43 +132,6 @@ export async function generateReport(data: ReportData): Promise<void> {
     doc.setFont('helvetica', 'normal');
     doc.text(cb.desc, margin, y, { maxWidth: contentW });
     y += 12;
-  }
-
-  // ---- Page 4+: Batch results (if available) ----
-  if (data.batchResults && data.batchResults.length > 0) {
-    doc.addPage();
-    y = margin;
-
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Batch Palette Results', margin, y);
-    y += 12;
-
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'normal');
-
-    // Table header
-    doc.setFont('helvetica', 'bold');
-    doc.text('Foreground', margin, y);
-    doc.text('Background', margin + 35, y);
-    doc.text('Ratio', margin + 70, y);
-    doc.text('AA', margin + 95, y);
-    doc.text('AAA', margin + 110, y);
-    y += 6;
-    doc.setFont('helvetica', 'normal');
-
-    for (const result of data.batchResults) {
-      checkPage(8);
-      doc.text(result.fg, margin, y);
-      doc.text(result.bg, margin + 35, y);
-      doc.text(result.ratioFormatted, margin + 70, y);
-      doc.setTextColor(result.wcag.aaNormal ? '#1a7a1a' : '#c0392b');
-      doc.text(result.wcag.aaNormal ? 'Pass' : 'Fail', margin + 95, y);
-      doc.setTextColor(result.wcag.aaaNormal ? '#1a7a1a' : '#c0392b');
-      doc.text(result.wcag.aaaNormal ? 'Pass' : 'Fail', margin + 110, y);
-      doc.setTextColor('#333333');
-      y += 6;
-    }
   }
 
   // Footer on last page

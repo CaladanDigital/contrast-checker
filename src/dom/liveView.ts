@@ -3,7 +3,6 @@
  * Clicking a color swatch sets the foreground picker; shift+click sets background.
  */
 
-import { isPro, onProStatusChange } from '../utils/proGate';
 import { extractColorsFromDocument } from '../utils/colorExtraction';
 
 export function setupLiveView(): void {
@@ -19,27 +18,9 @@ export function setupLiveView(): void {
 
   if (!urlInput || !loadBtn || !phoneFrame || !colorsList || !statusEl) return;
 
-  function showPanel(): void {
-    panel!.hidden = false;
-    layout!.classList.add('has-panel');
-  }
-
-  function hidePanel(): void {
-    panel!.hidden = true;
-    layout!.classList.remove('has-panel');
-  }
-
-  function updateVisibility(): void {
-    if (isPro()) {
-      showPanel();
-    } else {
-      hidePanel();
-    }
-  }
-
-  // React to Pro status changes
-  onProStatusChange(() => updateVisibility());
-  updateVisibility();
+  // Always show the panel
+  panel.hidden = false;
+  layout.classList.add('has-panel');
 
   /** Normalize URL input to include protocol. */
   function normalizeUrl(input: string): string | null {

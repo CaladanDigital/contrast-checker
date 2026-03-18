@@ -31,20 +31,12 @@
     "description": "Free WCAG color contrast checker with colorblind simulation, accessible alternatives, and PDF reports.",
     "applicationCategory": "DesignApplication",
     "operatingSystem": "Web",
-    "offers": [
-      {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Free tier with contrast checking, WCAG compliance, colorblind simulation"
-      },
-      {
-        "@type": "Offer",
-        "price": "8",
-        "priceCurrency": "USD",
-        "description": "Pro tier with batch palette checking, PDF reports, saved palettes"
-      }
-    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free WCAG contrast checker with colorblind simulation, PDF reports, and live site preview"
+    },
     "author": {
       "@type": "Organization",
       "name": "Caladan Digital LLC",
@@ -65,13 +57,15 @@
         <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true" aria-controls="featuresDropdownMenu">Features <span class="nav-dropdown-arrow">&#9662;</span></button>
         <div class="nav-dropdown-menu" id="featuresDropdownMenu" role="menu">
           <a href="#inputSection" role="menuitem">Check Contrast</a>
+          <a href="#contrastSection" role="menuitem">WCAG Compliance</a>
           <a href="#colorblindSection" role="menuitem">Colorblind Sim</a>
-          <a href="#previewSection" role="menuitem">Live Preview</a>
-          <a href="#liveViewPanel" role="menuitem" class="nav-pro-link">Live Site View <span class="pro-label">Pro</span></a>
+          <a href="#suggestionsSection" role="menuitem">Suggestions</a>
+          <a href="#liveViewPanel" role="menuitem">Live Site View</a>
           <a href="#guidelinesSection" role="menuitem">Guidelines</a>
         </div>
       </div>
       <a href="/blog/">Blog</a>
+      <a href="https://buymeacoffee.com/caladandigital" target="_blank" rel="noopener noreferrer" class="support-btn">Support Us</a>
     </nav>
   </header>
   <div class="app-layout" id="appLayout">
@@ -172,7 +166,7 @@
       <div class="button-group">
         <button id="copyButton" aria-label="Copy CSS to clipboard">&#128203; Copy CSS</button>
         <button id="shareButton" aria-label="Copy shareable link to clipboard">&#128279; Share Link</button>
-        <button id="exportPdfButton" class="pro-feature-btn" aria-label="Export PDF accessibility report">&#128196; Export PDF <span class="pro-label">Pro</span></button>
+        <button id="exportPdfButton" aria-label="Export PDF accessibility report">&#128196; Export PDF</button>
       </div>
     </section>
 
@@ -255,19 +249,6 @@
       </div>
       <a href="#inputSection" class="back-to-top">&#8593; Change Colors</a>
     </section>
-    <!-- Batch Palette Checker (Pro) -->
-    <section id="batchSection" class="section-card">
-      <h2>Batch Palette Checker <span class="pro-label">Pro</span></h2>
-      <p class="section-explainer">Check all color combinations in your palette at once. Add your brand colors and see which pairs meet WCAG standards.</p>
-      <div id="batchPaletteContainer"></div>
-    </section>
-
-    <!-- Saved Palettes (Pro) -->
-    <section id="savedSection" class="section-card">
-      <h2>Saved Palettes <span class="pro-label">Pro</span></h2>
-      <p class="section-explainer">Save and quickly reload your favorite color combinations.</p>
-      <div id="savedPalettesContainer"></div>
-    </section>
 
     <section id="suggestionsSection" class="hidden">
       <div class="suggestions">
@@ -277,38 +258,13 @@
       </div>
       <a href="#inputSection" class="back-to-top">&#8593; Change Colors</a>
     </section>
-    <!-- Pricing Section -->
-    <section id="pricingSection" class="section-card">
-      <h2>Free vs. Pro</h2>
-      <p class="section-explainer">Everything you see today stays free forever. Pro unlocks power tools for professionals.</p>
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <div class="pricing-tier">Free</div>
-          <div class="pricing-price">$0</div>
-          <div class="pricing-period">forever</div>
-          <ul class="pricing-features">
-            <li class="pricing-feature included">Contrast ratio checker</li>
-            <li class="pricing-feature included">WCAG AA/AAA compliance</li>
-            <li class="pricing-feature included">Colorblind simulations</li>
-            <li class="pricing-feature included">Smart Fix suggestions</li>
-            <li class="pricing-feature included">Shareable links</li>
-            <li class="pricing-feature included">CSS export</li>
-          </ul>
-        </div>
-        <div class="pricing-card pricing-card--pro">
-          <div class="pricing-tier">Pro</div>
-          <div class="pricing-price">$8<span class="pricing-unit">/mo</span></div>
-          <div class="pricing-period">or $72/year (save 25%)</div>
-          <ul class="pricing-features">
-            <li class="pricing-feature included">Everything in Free</li>
-            <li class="pricing-feature included">Batch palette checker</li>
-            <li class="pricing-feature included">PDF accessibility reports</li>
-            <li class="pricing-feature included">Saved palettes</li>
-            <li class="pricing-feature included">Live site preview & color extraction</li>
-            <li class="pricing-feature included">Advanced color suggestions</li>
-          </ul>
-          <button class="pricing-cta" id="pricingUpgradeBtn">Upgrade to Pro</button>
-        </div>
+    <section id="supportSection" class="section-card">
+      <h2>Support This Tool</h2>
+      <p class="section-explainer">Accessibility Color Checker is free and always will be. If it saves you time, consider buying us a coffee to help keep it running.</p>
+      <div style="text-align: center; margin-top: 1.5rem;">
+        <a href="https://buymeacoffee.com/caladandigital" target="_blank" rel="noopener noreferrer">
+          <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 48px; width: 174px;">
+        </a>
       </div>
     </section>
 
@@ -355,9 +311,9 @@
       <a href="#inputSection" class="back-to-top">&#8593; Change Colors</a>
     </section>
   </main>
-  <aside class="live-view-panel" id="liveViewPanel" hidden>
+  <aside class="live-view-panel" id="liveViewPanel">
     <div class="live-view-header">
-      <h3>Live Site View <span class="pro-label">Pro</span></h3>
+      <h3>Live Site View</h3>
     </div>
     <div class="live-view-input-row">
       <input type="text" class="live-view-url-input" placeholder="example.com" aria-label="Website URL to preview">
@@ -379,7 +335,6 @@
     <small>&copy; 2026 Caladan Digital LLC. Free and open to all.</small>
   </footer>
   <div class="toast" id="bookmarkToast" role="status" aria-live="polite"></div>
-  <div id="licenseModal"></div>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

@@ -3,7 +3,6 @@
  * Pro-gated: free users see upgrade prompt.
  */
 
-import { isPro, onProStatusChange } from '../utils/proGate';
 import { getContrastRatio, checkWCAGCompliance } from '../utils/contrastCalculation';
 import { generateReport, type ReportData } from '../utils/pdfReport';
 
@@ -110,18 +109,5 @@ export function setupPdfExport(): void {
   const btn = document.getElementById('exportPdfButton');
   if (!btn) return;
 
-  function updateButtonState(): void {
-    if (!btn) return;
-    if (isPro()) {
-      btn.onclick = () => showExportDialog();
-    } else {
-      btn.onclick = () => {
-        const pricing = document.getElementById('pricingSection');
-        if (pricing) pricing.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      };
-    }
-  }
-
-  updateButtonState();
-  onProStatusChange(() => updateButtonState());
+  btn.onclick = () => showExportDialog();
 }
