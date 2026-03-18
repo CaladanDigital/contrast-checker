@@ -808,6 +808,18 @@ footer a { color: #666; }
   .nav-dropdown-menu { left: auto; right: 0; transform: none; min-width: 160px; }
 }
 
+/* ====== SKIP LINK ====== */
+.skip-link {
+  position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
+  background: #0066cc; color: white; padding: 0.75rem 1.5rem;
+  border-radius: 0 0 10px 10px; font-weight: 600; font-size: 0.9rem;
+  z-index: 200; text-decoration: none; border-bottom: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0; outline: 3px solid #0052a3; outline-offset: 2px;
+}
+
 /* ====== UTILITY ====== */
 .text-center { text-align: center; }
 .hidden { display: none !important; }

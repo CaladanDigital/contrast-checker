@@ -1,3 +1,3 @@
 Contact: mailto:info@caladandigital.com
 Preferred-Languages: en
-Canonical: https://accessiblitycolor.com/.well-known/security.txt
+Canonical: https://accessibilitycolor.com/.well-known/security.txt

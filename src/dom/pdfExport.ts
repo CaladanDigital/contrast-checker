@@ -7,10 +7,37 @@ import { getContrastRatio, checkWCAGCompliance } from '../utils/contrastCalculat
 import { generateReport, type ReportData } from '../utils/pdfReport';
 
 let dialogOpen = false;
+let triggerElement: HTMLElement | null = null;
+
+/** Trap focus within a container element. */
+function trapFocus(container: HTMLElement, e: KeyboardEvent): void {
+  if (e.key !== 'Tab') return;
+
+  const focusable = container.querySelectorAll<HTMLElement>(
+    'input, button, [tabindex]:not([tabindex="-1"])',
+  );
+  if (focusable.length === 0) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (e.shiftKey) {
+    if (document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    }
+  } else {
+    if (document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+}
 
 function showExportDialog(): void {
   if (dialogOpen) return;
   dialogOpen = true;
+  triggerElement = document.activeElement as HTMLElement | null;
 
   const backdrop = document.createElement('div');
   backdrop.className = 'modal-backdrop';
@@ -18,6 +45,9 @@ function showExportDialog(): void {
 
   const dialog = document.createElement('div');
   dialog.className = 'pdf-dialog';
+  dialog.setAttribute('role', 'dialog');
+  dialog.setAttribute('aria-modal', 'true');
+  dialog.setAttribute('aria-label', 'Export PDF Report');
 
   const title = document.createElement('h3');
   title.textContent = 'Export PDF Report';
@@ -73,18 +103,24 @@ function showExportDialog(): void {
   document.body.appendChild(dialog);
   nameInput.focus();
 
-  document.addEventListener('keydown', function escHandler(e: KeyboardEvent) {
+  function keyHandler(e: KeyboardEvent): void {
     if (e.key === 'Escape') {
       closeDialog(backdrop, dialog);
-      document.removeEventListener('keydown', escHandler);
+      document.removeEventListener('keydown', keyHandler);
     }
-  });
+    trapFocus(dialog, e);
+  }
+  document.addEventListener('keydown', keyHandler);
 }
 
 function closeDialog(backdrop: HTMLElement, dialog: HTMLElement): void {
   backdrop.remove();
   dialog.remove();
   dialogOpen = false;
+  if (triggerElement) {
+    triggerElement.focus();
+    triggerElement = null;
+  }
 }
 
 async function doExport(projectName: string, notes: string): Promise<void> {

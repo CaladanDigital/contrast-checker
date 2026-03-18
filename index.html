@@ -20,7 +20,13 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://accessibilitycolor.com">
   <meta property="og:image" content="https://accessibilitycolor.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Accessibility Color Checker | accessibilitycolor.com">
+  <meta name="twitter:description" content="Free WCAG color contrast checker. Test foreground and background colors for AA/AAA accessibility compliance.">
+  <meta name="twitter:image" content="https://accessibilitycolor.com/og-image.png">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" href="/fonts/PlusJakartaSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/PlusJakartaSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
       <meta name='impact-site-verification' value='a0471cd1-66d0-4549-85ec-6875e0144894'>
   <script type="application/ld+json">
   {
@@ -46,6 +52,7 @@
   </script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- Google Tag Manager (noscript) -->
        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NP9N5B5C"
          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -69,7 +76,7 @@
     </nav>
   </header>
   <div class="app-layout" id="appLayout">
-  <main>
+  <main id="main-content">
     <section class="hero" id="heroSection">
       <div class="hero-content">
         <p class="hero-overline">Build inclusive products with confidence.</p>
@@ -126,7 +133,7 @@
           <div class="mini-preview" id="miniPreview">
             <span class="mini-preview-text">Aa</span>
           </div>
-          <div class="contrast-value" id="contrastRatio" role="status" aria-label="Contrast ratio">21:1</div>
+          <div class="contrast-value" id="contrastRatio" role="status" aria-live="polite" aria-label="Contrast ratio">21:1</div>
           <div class="contrast-label">Contrast Ratio</div>
           <button id="swapButton" aria-label="Swap foreground and background colors">&#8596; Swap</button>
         </div>
