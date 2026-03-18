@@ -4,6 +4,7 @@
  */
 
 import { isPro, onProStatusChange } from '../utils/proGate';
+import { extractColorsFromDocument } from '../utils/colorExtraction';
 
 export function setupLiveView(): void {
   const panel = document.getElementById('liveViewPanel') as HTMLElement | null;
@@ -80,42 +81,64 @@ export function setupLiveView(): void {
     iframe.src = '/api/proxy-site?url=' + encodeURIComponent(url);
     phoneFrame!.appendChild(iframe);
 
-    // Detect iframe load failure with timeout
+    // Wait for iframe to load, then extract colors client-side
     let loaded = false;
-    iframe.addEventListener('load', () => { loaded = true; });
+
+    iframe.addEventListener('load', async () => {
+      loaded = true;
+
+      try {
+        // Try client-side extraction from iframe DOM (works for same-origin proxy)
+        const iframeDoc = iframe.contentDocument;
+        if (iframeDoc) {
+          const colors = extractColorsFromDocument(iframeDoc);
+          if (colors.length > 0) {
+            renderColors(colors);
+            statusEl!.textContent = `${colors.length} colors detected`;
+            statusEl!.className = 'live-view-status live-view-status--success';
+            loadBtn!.disabled = false;
+            return;
+          }
+        }
+      } catch {
+        // Cross-origin or other error — fall back to server-side extraction
+      }
+
+      // Fallback: server-side extraction
+      try {
+        const resp = await fetch('/api/extract-colors', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await resp.json();
+
+        if (data.colors && data.colors.length > 0) {
+          renderColors(data.colors);
+          statusEl!.textContent = `${data.colors.length} colors detected`;
+          statusEl!.className = 'live-view-status live-view-status--success';
+        } else {
+          statusEl!.textContent = data.error || 'No colors found.';
+          statusEl!.className = 'live-view-status live-view-status--error';
+        }
+      } catch {
+        statusEl!.textContent = 'Failed to extract colors.';
+        statusEl!.className = 'live-view-status live-view-status--error';
+      } finally {
+        loadBtn!.disabled = false;
+      }
+    });
+
     setTimeout(() => {
       if (!loaded) {
         const fb = document.createElement('div');
         fb.className = 'live-view-fallback';
         fb.textContent = 'Preview unavailable for this site';
         phoneFrame!.appendChild(fb);
+        loadBtn!.disabled = false;
       }
     }, 10000);
-
-    // Fetch colors from API
-    try {
-      const resp = await fetch('/api/extract-colors', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
-      });
-
-      const data = await resp.json();
-
-      if (data.colors && data.colors.length > 0) {
-        renderColors(data.colors);
-        statusEl!.textContent = `${data.colors.length} colors detected`;
-        statusEl!.className = 'live-view-status live-view-status--success';
-      } else {
-        statusEl!.textContent = data.error || 'No colors found.';
-        statusEl!.className = 'live-view-status live-view-status--error';
-      }
-    } catch {
-      statusEl!.textContent = 'Failed to extract colors.';
-      statusEl!.className = 'live-view-status live-view-status--error';
-    } finally {
-      loadBtn!.disabled = false;
-    }
   }
 
   function renderColors(colors: Array<{ hex: string; frequency: number }>): void {
