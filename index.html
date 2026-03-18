@@ -67,12 +67,14 @@
           <a href="#inputSection" role="menuitem">Check Contrast</a>
           <a href="#colorblindSection" role="menuitem">Colorblind Sim</a>
           <a href="#previewSection" role="menuitem">Live Preview</a>
+          <a href="#liveViewPanel" role="menuitem" class="nav-pro-link">Live Site View <span class="pro-label">Pro</span></a>
           <a href="#guidelinesSection" role="menuitem">Guidelines</a>
         </div>
       </div>
       <a href="/blog/">Blog</a>
     </nav>
   </header>
+  <div class="app-layout" id="appLayout">
   <main>
     <section class="hero" id="heroSection">
       <div class="hero-content">
@@ -302,6 +304,7 @@
             <li class="pricing-feature included">Batch palette checker</li>
             <li class="pricing-feature included">PDF accessibility reports</li>
             <li class="pricing-feature included">Saved palettes</li>
+            <li class="pricing-feature included">Live site preview & color extraction</li>
             <li class="pricing-feature included">Advanced color suggestions</li>
           </ul>
           <button class="pricing-cta" id="pricingUpgradeBtn">Upgrade to Pro</button>
@@ -352,6 +355,22 @@
       <a href="#inputSection" class="back-to-top">&#8593; Change Colors</a>
     </section>
   </main>
+  <aside class="live-view-panel" id="liveViewPanel" hidden>
+    <div class="live-view-header">
+      <h3>Live Site View <span class="pro-label">Pro</span></h3>
+    </div>
+    <div class="live-view-input-row">
+      <input type="text" class="live-view-url-input" placeholder="example.com" aria-label="Website URL to preview">
+      <button type="button" class="live-view-load-btn" aria-label="Load site preview">Go</button>
+    </div>
+    <div class="live-view-phone-frame">
+      <div class="live-view-placeholder">Enter a URL above to preview</div>
+    </div>
+    <p class="live-view-status"></p>
+    <div class="live-view-colors-label">Detected Colors</div>
+    <div class="live-view-colors-list"></div>
+  </aside>
+  </div>
   <footer>
     <a href="https://caladandigital.com" class="footer-logo-link" aria-label="Caladan Digital">
       <img src="/caladan-logo.png" alt="Caladan Digital" class="footer-logo">

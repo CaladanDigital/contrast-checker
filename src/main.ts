@@ -18,6 +18,7 @@ import { setupProUpgrade } from './dom/proUpgrade';
 import { setupBatchPalette } from './dom/batchPalette';
 import { setupPdfExport } from './dom/pdfExport';
 import { setupSavedPalettes } from './dom/savedPalettes';
+import { setupLiveView } from './dom/liveView';
 
 function init(): void {
   const elements = getInputElements();
@@ -124,6 +125,7 @@ function init(): void {
   setupBatchPalette();
   setupPdfExport();
   setupSavedPalettes();
+  setupLiveView();
 
   // Re-render Pro-gated sections when license status changes
   onProStatusChange(() => updateAll());

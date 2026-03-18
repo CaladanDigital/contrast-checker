@@ -102,6 +102,7 @@ function showProMemberView(): void {
     'Batch palette checker — test all color combos at once',
     'PDF accessibility reports — share & archive results',
     'Saved palettes — reload favorites instantly',
+    'Live site preview — extract colors from any website',
     'Advanced color suggestions — more alternatives, better matches',
   ];
   for (const b of benefits) {
