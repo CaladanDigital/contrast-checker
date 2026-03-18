@@ -69,14 +69,13 @@ export function setupLiveView(): void {
     colorsList!.innerHTML = '';
     loadBtn!.disabled = true;
 
-    // Load iframe
-    const existingIframe = phoneFrame!.querySelector('iframe');
-    if (existingIframe) existingIframe.remove();
+    // Clear phone frame (remove placeholder, old iframe, old fallback)
+    while (phoneFrame!.firstChild) phoneFrame!.removeChild(phoneFrame!.firstChild);
 
+    // Load iframe
     const iframe = document.createElement('iframe');
     iframe.className = 'live-view-iframe';
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('referrerpolicy', 'no-referrer');
     iframe.setAttribute('title', 'Site preview');
     iframe.src = url;
     phoneFrame!.appendChild(iframe);
@@ -86,14 +85,10 @@ export function setupLiveView(): void {
     iframe.addEventListener('load', () => { loaded = true; });
     setTimeout(() => {
       if (!loaded) {
-        // Show fallback
-        const fallback = phoneFrame!.querySelector('.live-view-fallback');
-        if (!fallback) {
-          const fb = document.createElement('div');
-          fb.className = 'live-view-fallback';
-          fb.textContent = 'Preview unavailable for this site';
-          phoneFrame!.appendChild(fb);
-        }
+        const fb = document.createElement('div');
+        fb.className = 'live-view-fallback';
+        fb.textContent = 'Preview unavailable for this site';
+        phoneFrame!.appendChild(fb);
       }
     }, 5000);
 
