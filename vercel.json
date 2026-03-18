@@ -5,27 +5,6 @@
     "framework": null,
     "headers": [
           {
-                  "source": "/api/proxy-site",
-                  "headers": [
-                            {
-                                        "key": "X-Frame-Options",
-                                        "value": "SAMEORIGIN"
-                            },
-                            {
-                                        "key": "Content-Security-Policy",
-                                        "value": "frame-ancestors 'self'"
-                            },
-                            {
-                                        "key": "X-Content-Type-Options",
-                                        "value": "nosniff"
-                            },
-                            {
-                                        "key": "Cache-Control",
-                                        "value": "no-store"
-                            }
-                  ]
-          },
-          {
                   "source": "/(.*)",
                   "headers": [
                             {
@@ -63,6 +42,27 @@
                             {
                                         "key": "Cross-Origin-Resource-Policy",
                                         "value": "same-origin"
+                            }
+                  ]
+          },
+          {
+                  "source": "/api/proxy-site",
+                  "headers": [
+                            {
+                                        "key": "X-Frame-Options",
+                                        "value": "SAMEORIGIN"
+                            },
+                            {
+                                        "key": "Content-Security-Policy",
+                                        "value": "frame-ancestors 'self'"
+                            },
+                            {
+                                        "key": "X-Content-Type-Options",
+                                        "value": "nosniff"
+                            },
+                            {
+                                        "key": "Cache-Control",
+                                        "value": "no-store"
                             }
                   ]
           }
