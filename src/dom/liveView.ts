@@ -77,7 +77,7 @@ export function setupLiveView(): void {
     iframe.className = 'live-view-iframe';
     iframe.setAttribute('referrerpolicy', 'no-referrer');
     iframe.setAttribute('title', 'Site preview');
-    iframe.src = url;
+    iframe.src = '/api/proxy-site?url=' + encodeURIComponent(url);
     phoneFrame!.appendChild(iframe);
 
     // Detect iframe load failure with timeout
@@ -90,7 +90,7 @@ export function setupLiveView(): void {
         fb.textContent = 'Preview unavailable for this site';
         phoneFrame!.appendChild(fb);
       }
-    }, 5000);
+    }, 10000);
 
     // Fetch colors from API
     try {
